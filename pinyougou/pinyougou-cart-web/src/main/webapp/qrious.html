@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>qrious二维码测试</title>
+    <script src="plugins/qrious.min.js"></script>
+</head>
+<body>
+<img id="qrious">
+<script>
+    var qr = new QRious({
+        //要渲染的元素
+        element:document.getElementById("qrious"),
+        //容错级别
+        level:"H",
+        //二维码图片大小
+        size:250,
+        //二维码内容
+        value:"jbl whom i love"
+    });
+</script>
+</body>
+</html>
