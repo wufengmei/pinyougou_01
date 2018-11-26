@@ -174,11 +174,10 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
      * @param page 第几页
      * @param rows 页大小
      * @param orderAndGood 订单条件
-     * @param username 登陆系统用户名
      * @return  订单列表和总页数
      */
     @Override
-    public PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood, String username) {
+    public PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood) {
         // 分页
         PageHelper.startPage(page,rows);
         List<OrderAndGood> list = orderAndGoodMapper.findOrderAndGood(orderAndGood);

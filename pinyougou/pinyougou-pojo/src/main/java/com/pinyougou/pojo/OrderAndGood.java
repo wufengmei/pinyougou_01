@@ -8,6 +8,10 @@ import java.math.BigDecimal;
  * @date 2018/11/26
  */
 public class OrderAndGood implements Serializable {
+
+    // 当前登陆的商家
+    private String username;
+
     // 商家id
     private String sellerId;
 
@@ -115,5 +119,12 @@ public class OrderAndGood implements Serializable {
 
     public void setReceiverAreaName(String receiverAreaName) {
         this.receiverAreaName = receiverAreaName;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

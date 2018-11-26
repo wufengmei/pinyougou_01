@@ -1,15 +1,11 @@
-package com.pinyougou.manage.controller;
+package com.pinyougou.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.OrderAndGood;
-import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.vo.PageResult;
-import com.pinyougou.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/order")
 @RestController
@@ -28,7 +24,11 @@ public class OrderController {
     @PostMapping("/search")
     public PageResult search(@RequestBody OrderAndGood orderAndGood, @RequestParam(value = "page", defaultValue = "1")Integer page,
                              @RequestParam(value = "rows", defaultValue = "10")Integer rows) {
-        orderAndGood.setUsername("");
+        // 获取登陆用户名
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        orderAndGood.setUsername(username);
+        System.out.println(username);
+
         return orderService.searchByUsername(page, rows, orderAndGood);
     }
 

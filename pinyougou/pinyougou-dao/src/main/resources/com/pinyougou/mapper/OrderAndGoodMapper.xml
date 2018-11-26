@@ -6,6 +6,9 @@
       select * from `tb_order` o,`tb_order_item` i ,`tb_goods` g
         <where>
             o.`order_id`= i.`order_id` and i.`goods_id`=g.`id`
+            <if test="username!=null and username !=''">
+                AND o.seller_id = #{username}
+            </if>
             <if test="status!=null and status !=''">
                 AND status = #{status}
             </if>

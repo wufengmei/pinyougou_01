@@ -36,8 +36,7 @@ public interface OrderService extends BaseService<TbOrder> {
      * @param page 第几页
      * @param rows 页大小
      * @param orderAndGood 订单条件
-     * @param username 登陆系统用户名
      * @return  订单列表和总页数
      */
-    PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood, String username);
+    PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 }
