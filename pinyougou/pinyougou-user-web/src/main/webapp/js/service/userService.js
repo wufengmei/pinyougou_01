@@ -11,6 +11,11 @@ app.service("userService",function($http){
 
     this.getUsername = function () {
         return $http.get("user/getUsername.do?r=" + Math.random());
-
-    }
+    };
+    this.getUserInformation = function () {
+        return $http.get("user/getUserInformation.do?r=" + Math.random());
+    };
+    this.updateUserInformation = function (userInformation) {
+        return $http.post("user/updateUserInformation.do",userInformation);
+    };
 });

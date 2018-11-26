@@ -10,10 +10,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.regex.PatternSyntaxException;
 
 @RequestMapping("/user")
@@ -23,12 +21,15 @@ public class UserController {
     @Reference
     private UserService userService;
 
+    private HttpServletRequest request;
+
     /**
      * 获取当前登录的用户名
+     *
      * @return 用户信息
      */
     @GetMapping("/getUsername")
-    public Map<String, Object> getUsername(){
+    public Map<String, Object> getUsername() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         resultMap.put("username", username);
@@ -139,6 +140,27 @@ public class UserController {
     public PageResult search(@RequestBody TbUser user, @RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         return userService.search(page, rows, user);
+    }
+
+    @GetMapping("/getUserInformation")
+    public Map<String, Object> getUserInformation() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        resultMap = userService.getUserInformation(username);
+        return resultMap;
+    }
+
+    @PostMapping("/updateUserInformation")
+    public Result updateUserInformation(@RequestBody String information) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            userService.updateUserInformation(information,username);
+            return Result.ok("保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.fail("保存失败");
     }
 
 }
