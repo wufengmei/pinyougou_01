@@ -1,5 +1,6 @@
 package com.pinyougou.order.service;
 
+import com.pinyougou.pojo.OrderAndGood;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.service.BaseService;
@@ -29,4 +30,14 @@ public interface OrderService extends BaseService<TbOrder> {
      * @param transaction_id 微信订单号
      */
     void updateOrderStatus(String outTradeNo, String transaction_id);
+
+    /**
+     * 查询商家对应的所有订单列表
+     * @param page 第几页
+     * @param rows 页大小
+     * @param orderAndGood 订单条件
+     * @param username 登陆系统用户名
+     * @return  订单列表和总页数
+     */
+    PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood, String username);
 }
