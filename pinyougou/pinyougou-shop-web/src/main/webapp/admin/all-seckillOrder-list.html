@@ -19,18 +19,17 @@
     <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
     <script src="../plugins/angularjs/pagination.js"></script>
     <script src="../js/base_pagination.js"></script>
+    <script src="../js/service/itemCatService.js"></script>
+    <script src="../js/service/allSeckillOrderListService.js"></script>
+    <script src="../js/controller/baseController.js"></script>
+    <script src="../js/controller/allSeckillOrderListController.js"></script>
     <script src="../plugins/citypicker/distpicker.data.js"></script>
     <script src="../plugins/citypicker/distpicker.js"></script>
-    <script src="../js/service/itemCatService.js"></script>
-    <script src="../js/service/allOrderListService.js"></script>
-    <script src="../js/controller/baseController.js"></script>
-    <script src="../js/controller/allOrderListController.js"></script>
-
 
 
 </head>
 
-<body ng-app="pinyougou" ng-controller="allOrderListController" ng-init="findItemCatList();selectItemCat1List();" class="hold-transition skin-red sidebar-mini">
+<body ng-app="pinyougou" ng-controller="allSeckillOrderListController" ng-init="findItemCatList();selectItemCat1List();" class="hold-transition skin-red sidebar-mini">
 <!-- .box-body -->
 <div class="box box-primary">
     <div class="box-header with-border">
@@ -47,10 +46,6 @@
             <div class="box-tools pull-right">
                 <div class="has-feedback">
                     用户<input ng-model="searchEntity.userId" >
-                    状态：
-                    <input type="radio" ng-model="searchEntity.status" ng-value="" />全部
-                    <input type="radio" ng-model="searchEntity.status" ng-value="1" />未支付
-                    <input type="radio" ng-model="searchEntity.status" ng-value="2" />已付款
                     <div>
                         <table>
                             <tr>
@@ -79,17 +74,17 @@
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="province1" ng-model="searchEntity.receiverAreaName"></select>
+                                            <select class="form-control" id="province1" ng-model="searchEntity.receiverAddress"></select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="city1" ng-model="searchEntity.receiverAreaName"></select>
+                                            <select class="form-control" id="city1" ng-model="searchEntity.receiverAddress"></select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="district1" ng-model="searchEntity.receiverAreaName"></select>
+                                            <select class="form-control" id="district1" ng-model="searchEntity.receiverAddress"></select>
                                         </div>
                                     </td>
                                 </tr>
@@ -111,10 +106,11 @@
                     <th class="sorting">一级分类</th>
                     <th class="sorting">二级分类</th>
                     <th class="sorting">三级分类</th>
+                    <th class="sorting">支付时间</th>
+                    <th class="sorting">原价</th>
+                    <th class="sorting">秒杀价</th>
                     <th class="sorting">实付金额</th>
-                    <th class="sorting">更新时间</th>
-                    <th class="sorting">状态</th>
-                    <th class="sorting">收获地址</th>
+                    <th class="sorting">收货地址</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -125,10 +121,11 @@
                     <td>{{itemCatList[entity.category1Id]}}</td>
                     <td>{{itemCatList[entity.category2Id]}}</td>
                     <td>{{itemCatList[entity.category3Id]}}</td>
-                    <td>{{entity.payment}}</td>
-                    <td>{{entity.updateTime}}</td>
-                    <td>{{orderStatus[entity.status]}}</td>
-                    <td>{{entity.receiverAreaName}}</td>
+                    <td>{{entity.payTime}}</td>
+                    <td>{{entity.price}}</td>
+                    <td>{{entity.costPrice}}</td>
+                    <td>{{entity.money}}</td>
+                    <td>{{entity.receiverAddress}}</td>
                     <td class="text-center">
                         <button type="button" ng-click="findOne(entity.sellerId)" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#sellerModal" >详情</button>
                     </td>

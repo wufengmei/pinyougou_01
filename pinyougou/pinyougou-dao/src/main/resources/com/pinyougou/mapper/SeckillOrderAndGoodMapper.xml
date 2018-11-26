@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pinyougou.mapper.OrderAndGoodMapper">
-    <select id="findOrderAndGood" parameterType="OrderAndGood"   resultType="OrderAndGood">
-      select * from `tb_order` o,`tb_order_item` i ,`tb_goods` g
+<mapper namespace="com.pinyougou.mapper.SeckillOrderAndGoodMapper">
+    <select id="findSeckillOrderAndGood" parameterType="SeckillOrderAndGood"   resultType="SeckillOrderAndGood">
+        select * from `tb_seckill_order` o,`tb_seckill_goods` s,`tb_goods` g
         <where>
-            o.`order_id`= i.`order_id` and i.`goods_id`=g.`id`
+            o.`seckill_id` = s.`id` and s.`goods_id` = g.`id`
             <if test="username!=null and username !=''">
                 AND o.seller_id = #{username}
             </if>
-            <if test="status!=null and status !=''">
-                AND status = #{status}
-            </if>
+
             <if test="sellerId!=null and sellerId !=''">
                 AND o.seller_id like "%${sellerId}%"
             </if>
@@ -27,8 +25,8 @@
             <if test="category3Id!=null and category3Id !=''">
                 AND g.`category3_id` = #{category3Id}
             </if>
-            <if test="receiverAreaName!=null and receiverAreaName !=''">
-                AND o.`receiver_area_name` like "%${receiverAreaName}%"
+            <if test="receiverAddress!=null and receiverAddress !=''">
+                AND o.`receiver_address` like "%${receiverAddress}%"
             </if>
         </where>
 
