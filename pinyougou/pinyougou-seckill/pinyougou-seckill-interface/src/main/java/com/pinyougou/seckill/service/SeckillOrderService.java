@@ -4,6 +4,8 @@ import com.pinyougou.pojo.TbSeckillOrder;
 import com.pinyougou.service.BaseService;
 import com.pinyougou.vo.PageResult;
 
+import java.util.Map;
+
 public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
 
     PageResult search(Integer page, Integer rows, TbSeckillOrder seckillOrder);
@@ -35,4 +37,6 @@ public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
      * @param outTradeNo 秒杀商品订单号
      */
     void deleteOrderInRedisByOutTradeNo(String outTradeNo) throws InterruptedException;
+
+    Map<String, Object> findMySeckillOrder(String username);
 }
