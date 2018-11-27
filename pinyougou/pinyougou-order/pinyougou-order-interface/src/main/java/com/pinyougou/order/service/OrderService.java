@@ -1,9 +1,12 @@
 package com.pinyougou.order.service;
 
 import com.pinyougou.pojo.TbOrder;
+import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.service.BaseService;
 import com.pinyougou.vo.PageResult;
+
+import java.util.List;
 
 public interface OrderService extends BaseService<TbOrder> {
 
@@ -29,4 +32,14 @@ public interface OrderService extends BaseService<TbOrder> {
      * @param transaction_id 微信订单号
      */
     void updateOrderStatus(String outTradeNo, String transaction_id);
+
+    List findOrderListByUsername(String username);
+
+    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
+
+    TbPayLog findOutTradeNo(String orderId);
+
+    TbOrderItem findOrderItemById(String itemId);
+
+    List<TbOrder> findOrderById(String orderId);
 }

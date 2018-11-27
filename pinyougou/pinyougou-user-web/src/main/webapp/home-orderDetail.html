@@ -10,9 +10,17 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
+	<script src="plugins/angularjs/angular.min.js"></script>
+	<script src="js/base.js"></script>
+
+	<script src="js/controller/detailController.js"></script>
+	<script src="js/service/userService.js"></script>
+
+
+
 </head>
 
-<body>
+<body ng-app="pinyougou" ng-controller="detailController" ng-init="getOrderId();getUsername()">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -23,7 +31,7 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
+						<li class="f-item">{{username}}　<span><a href="/logout/cas">退出登录</a></span></li>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>
@@ -184,10 +192,10 @@ $(function(){
                     </div>
                 </div>
                 <!--右侧主内容-->
-                <div class="yui3-u-5-6">
+                <div class="yui3-u-5-6" ng-init="findOrderById()">
                     <div class="body">
                         <div class="order-detail">
-                            <h4>订单详情</h4>
+                            <h4>订单详情   {{orderId}}</h4>
                             <div class="order-bar">
                                 <div class="sui-steps-round steps-round-auto steps-4">
                                     <div class="finished">
@@ -197,8 +205,8 @@ $(function(){
                                         </div>
                                         <label>
                                             <span>提交订单</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
+                                            <span>{{createTime}}</span>
+                                            <span></span>
                                         </label>
                                     </div>
                                     <div class="current">
