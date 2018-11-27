@@ -25,6 +25,8 @@ public class SeckillOrderAndGood implements Serializable {
     // 原价
     private BigDecimal price;
 
+    private String status;
+
     // 枪杀价
     private BigDecimal costPrice;
 
@@ -45,6 +47,18 @@ public class SeckillOrderAndGood implements Serializable {
 
     // 地址
     private String receiverAddress;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public String getUsername() {
         return username;

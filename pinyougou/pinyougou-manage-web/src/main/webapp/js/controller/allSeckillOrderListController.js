@@ -116,4 +116,7 @@ app.controller("allSeckillOrderListController", function ($scope, $http,$control
         }
     });
 
+    //订单的状态
+    $scope.orderStatus = ["未付款","已付款","未发货","已发货","交易成功","交易关闭","待评价"];
+
 });
