@@ -7,4 +7,9 @@ import com.pinyougou.vo.PageResult;
 public interface SellerService extends BaseService<TbSeller> {
 
     PageResult search(Integer page, Integer rows, TbSeller seller);
+
+    /**
+     * 修改密码
+     */
+    void updatePassword(String sellerId,String newPwd);
 }

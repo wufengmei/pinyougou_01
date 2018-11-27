@@ -4,7 +4,10 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbSeller;
 import com.pinyougou.sellergoods.service.SellerService;
 import com.pinyougou.vo.PageResult;
+import com.pinyougou.vo.Password;
 import com.pinyougou.vo.Result;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,6 +90,27 @@ public class SellerController {
     public PageResult search(@RequestBody  TbSeller seller, @RequestParam(value = "page", defaultValue = "1")Integer page,
                                @RequestParam(value = "rows", defaultValue = "10")Integer rows) {
         return sellerService.search(page, rows, seller);
+    }
+
+    @RequestMapping("/updatePassword")
+    public Result updatePassword(@RequestBody Password password){
+        try{
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String newPwd = passwordEncoder.encode(password.getNewPwd());
+            //获取用户名
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+            TbSeller seller = findOne(name);
+            //校验密码
+            if(BCrypt.checkpw(password.getOldPwd(),seller.getPassword())){
+                sellerService.updatePassword(name,newPwd);
+                return Result.ok("修改密码成功！");
+            }
+            return Result.fail("原密码错误！");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail("修改密码失败！");
+        }
     }
 
 }

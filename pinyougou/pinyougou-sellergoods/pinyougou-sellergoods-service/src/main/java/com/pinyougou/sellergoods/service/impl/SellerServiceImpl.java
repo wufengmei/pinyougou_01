@@ -47,4 +47,16 @@ public class SellerServiceImpl extends BaseServiceImpl<TbSeller> implements Sell
 
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
+
+    @Override
+    public void updatePassword(String sellerId, String newPwd) {
+        //查询商家
+        TbSeller seller = sellerMapper.selectByPrimaryKey(sellerId);
+        if(seller != null){
+            //修改密码
+            seller.setPassword(newPwd);
+            sellerMapper.updateByPrimaryKey(seller);
+        }
+
+    }
 }
