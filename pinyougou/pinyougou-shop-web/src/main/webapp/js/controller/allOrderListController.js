@@ -117,6 +117,7 @@ app.controller("allOrderListController", function ($scope, $http,$controller, al
             //根据1级商品分类查询2级商品分类
             itemCatService.findByParentId(newValue).success(function (response) {
                 $scope.itemCat2List = response;
+                $scope.itemCat3List = "";
             });
         }
     });
@@ -128,6 +129,20 @@ app.controller("allOrderListController", function ($scope, $http,$controller, al
             itemCatService.findByParentId(newValue).success(function (response) {
                 $scope.itemCat3List = response;
             });
+        }
+    });
+
+    //城市联动
+    $scope.$watch("searchAdress.province1", function (newValue, oldValue) {
+        if (newValue != undefined) {
+
+            $scope.searchAdress.district1="";
+            $scope.searchAdress.city1="";
+        }
+    });
+    $scope.$watch("searchAdress.city1", function (newValue, oldValue) {
+        if (newValue != undefined) {
+            $scope.searchAdress.district1="";
         }
     });
 

@@ -20,14 +20,7 @@ public class SeckillOrderAndGood implements Serializable {
     private String userId;
 
     // 商品名称
-    private String goodsName;
-
-    // 商品分类
-    private Long category1Id;
-
-    private Long category2Id;
-
-    private Long category3Id;
+    private String title;
 
     // 原价
     private BigDecimal price;
@@ -38,8 +31,17 @@ public class SeckillOrderAndGood implements Serializable {
     // 金额
     private BigDecimal money;
 
+    // 数量
+    private Integer num;
+
+    // 库存
+    private Integer stockCount;
+
+    // 已销售数量
+    private Integer count;
+
     // 支付时间
-    private Date payTime;
+    private String payTime;
 
     // 地址
     private String receiverAddress;
@@ -68,36 +70,12 @@ public class SeckillOrderAndGood implements Serializable {
         this.userId = userId;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public Long getCategory1Id() {
-        return category1Id;
-    }
-
-    public void setCategory1Id(Long category1Id) {
-        this.category1Id = category1Id;
-    }
-
-    public Long getCategory2Id() {
-        return category2Id;
-    }
-
-    public void setCategory2Id(Long category2Id) {
-        this.category2Id = category2Id;
-    }
-
-    public Long getCategory3Id() {
-        return category3Id;
-    }
-
-    public void setCategory3Id(Long category3Id) {
-        this.category3Id = category3Id;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public BigDecimal getPrice() {
@@ -124,11 +102,35 @@ public class SeckillOrderAndGood implements Serializable {
         this.money = money;
     }
 
-    public Date getPayTime() {
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public Integer getStockCount() {
+        return stockCount;
+    }
+
+    public void setStockCount(Integer stockCount) {
+        this.stockCount = stockCount;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount() {
+        this.count = this.num - this.stockCount;
+    }
+
+    public String getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Date payTime) {
+    public void setPayTime(String payTime) {
         this.payTime = payTime;
     }
 

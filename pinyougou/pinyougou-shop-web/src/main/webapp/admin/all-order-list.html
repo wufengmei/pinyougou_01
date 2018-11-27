@@ -41,7 +41,7 @@
 
         <!-- 数据表格 -->
         <div class="table-box">
-
+            <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
             <!--工具栏-->
 
             <div class="box-tools pull-right">
@@ -79,17 +79,17 @@
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="province1" ng-model="searchEntity.receiverAreaName"></select>
+                                            <select class="form-control" id="province1" ng-model="searchAdress.province1"></select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="city1" ng-model="searchEntity.receiverAreaName"></select>
+                                            <select class="form-control" id="city1" ng-model="searchAdress.city1"></select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="district1" ng-model="searchEntity.receiverAreaName"></select>
+                                            <select class="form-control" id="district1" ng-model="searchAdress.district1"></select>
                                         </div>
                                     </td>
                                 </tr>
@@ -97,7 +97,7 @@
 
                         </div>
 
-                    <button class="btn btn-default" ng-click="reloadList()" >查询</button>
+                    <button class="btn btn-default" ng-click="reloadList();searchEntity.receiverAreaName=searchAdress.province1+searchAdress.city1+searchAdress.district1" >查询</button>
                 </div>
                 </div>
             <!--工具栏/-->
@@ -111,6 +111,8 @@
                     <th class="sorting">一级分类</th>
                     <th class="sorting">二级分类</th>
                     <th class="sorting">三级分类</th>
+                    <th class="sorting">原价</th>
+                    <th class="sorting">购买数量</th>
                     <th class="sorting">实付金额</th>
                     <th class="sorting">更新时间</th>
                     <th class="sorting">状态</th>
@@ -125,7 +127,9 @@
                     <td>{{itemCatList[entity.category1Id]}}</td>
                     <td>{{itemCatList[entity.category2Id]}}</td>
                     <td>{{itemCatList[entity.category3Id]}}</td>
-                    <td>{{entity.payment}}</td>
+                    <td>{{entity.price}}</td>
+                    <td>{{entity.num}}</td>
+                    <td>{{entity.totalFee}}</td>
                     <td>{{entity.updateTime}}</td>
                     <td>{{orderStatus[entity.status]}}</td>
                     <td>{{entity.receiverAreaName}}</td>

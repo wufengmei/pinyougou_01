@@ -102,30 +102,17 @@ app.controller("allSeckillOrderListController", function ($scope, $http,$control
     };
 
 
-    //读取一级商品分类列表
-    $scope.selectItemCat1List = function () {
-        itemCatService.findByParentId(0).success(function (response) {
-            $scope.itemCat1List = response;
-        });
-    };
-
-    //读取二级商品分类列表
-    $scope.$watch("searchEntity.category1Id", function (newValue, oldValue) {
+    //城市联动
+    $scope.$watch("searchAdress.province1", function (newValue, oldValue) {
         if (newValue != undefined) {
-            //根据1级商品分类查询2级商品分类
-            itemCatService.findByParentId(newValue).success(function (response) {
-                $scope.itemCat2List = response;
-            });
+
+            $scope.searchAdress.district1="";
+            $scope.searchAdress.city1="";
         }
     });
-
-    //读取三级商品分类列表
-    $scope.$watch("searchEntity.category2Id", function (newValue, oldValue) {
+    $scope.$watch("searchAdress.city1", function (newValue, oldValue) {
         if (newValue != undefined) {
-            //根据2级商品分类查询3级商品分类
-            itemCatService.findByParentId(newValue).success(function (response) {
-                $scope.itemCat3List = response;
-            });
+            $scope.searchAdress.district1="";
         }
     });
 
