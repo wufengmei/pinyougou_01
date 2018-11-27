@@ -26,7 +26,7 @@ public class MySeckillOrderController {
      * @return 搜索结果
      */
     @PostMapping("/findMySeckillOrder")
-    public Map<String, Object> findMySeckillOrder(){
+    public Map<Object, Object> findMySeckillOrder(){
         // 查询登陆用户
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return seckillOrderService.findMySeckillOrder(username);

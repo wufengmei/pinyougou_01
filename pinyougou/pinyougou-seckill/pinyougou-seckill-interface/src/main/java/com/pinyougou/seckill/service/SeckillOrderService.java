@@ -38,5 +38,5 @@ public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
      */
     void deleteOrderInRedisByOutTradeNo(String outTradeNo) throws InterruptedException;
 
-    Map<String, Object> findMySeckillOrder(String username);
+    Map<Object, Object> findMySeckillOrder(String username);
 }
