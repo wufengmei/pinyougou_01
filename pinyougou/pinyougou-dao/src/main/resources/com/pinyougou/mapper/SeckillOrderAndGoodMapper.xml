@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pinyougou.mapper.SeckillOrderAndGoodMapper">
-    <select id="findSeckillOrderAndGood" parameterType="SeckillOrderAndGood"   resultType="SeckillOrderAndGood">
+
+    <select id="findSeckillOrderAndGood" parameterType="SeckillOrderAndGood" resultType="com.pinyougou.pojo.SeckillOrderAndGood">
         select * from `tb_seckill_order` o,`tb_seckill_goods` g
         <where>
             o.`seckill_id`=g.`id`
@@ -22,6 +23,12 @@
 
             <if test="receiverAddress!=null and receiverAddress !=''">
                 AND o.`receiver_address` like "%${receiverAddress}%"
+            </if>
+            <if test="status!=null and status !=''">
+                AND o.`status` = #{status}
+            </if>
+            <if test="id!=null and id !=''">
+                AND o.`id` =  #{id}
             </if>
         </where>
         order by o.`pay_time` desc

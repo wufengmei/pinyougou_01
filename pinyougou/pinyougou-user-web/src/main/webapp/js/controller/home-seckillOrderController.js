@@ -103,5 +103,11 @@ app.controller("seckillOrderController", function ($scope,$location, homeSeckill
     };
 
     //订单的状态
-    $scope.orderStatus = ["未付款","已付款","未发货","已发货","交易成功","交易关闭","待评价"];
+    $scope.orderStatus = ["未付款","未发货","已发货","交易成功","交易关闭","待评价"];
+
+    //查看订单详情页面
+    $scope.searchOrder = function (id) {
+        location.href = "home-seckillOrderDetail.html#?id=" + id;
+    };
+
 });

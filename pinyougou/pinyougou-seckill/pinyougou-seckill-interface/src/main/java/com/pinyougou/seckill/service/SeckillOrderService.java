@@ -1,5 +1,6 @@
 package com.pinyougou.seckill.service;
 
+import com.pinyougou.pojo.SeckillOrderAndGood;
 import com.pinyougou.pojo.TbSeckillOrder;
 import com.pinyougou.service.BaseService;
 import com.pinyougou.vo.PageResult;
@@ -38,5 +39,10 @@ public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
      */
     void deleteOrderInRedisByOutTradeNo(String outTradeNo) throws InterruptedException;
 
-    Map<Object, Object> findMySeckillOrder(String username);
+    Map<String, Object> findMySeckillOrder(String username);
+
+    Map<String, Object> findMyOneSeckillOrder(Long id,String username);
+    PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood);
+
+    void updateStatus(Long[] ids, String status);
 }

@@ -1,5 +1,7 @@
 package com.pinyougou.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,56 +11,57 @@ import java.util.Date;
  * @date 2018/11/26
  */
 public class SeckillOrderAndGood implements Serializable {
-
     // 当前登陆的商家
     private String username;
 
-    // 商家id
-    private String sellerId;
+    private String orderId;
+    private Long id;
 
-    // 用户名
-    private String userId;
+    private Long goodsId;
 
-    // 商品名称
+    private Long itemId;
+
     private String title;
 
-    // 原价
+    private String smallPic;
+
     private BigDecimal price;
+
+    private BigDecimal costPrice;
+
+    private String sellerId;
+
+    private Date createTime;
+
+    private Date checkTime;
 
     private String status;
 
-    // 枪杀价
-    private BigDecimal costPrice;
+    private Date startTime;
 
-    // 金额
-    private BigDecimal money;
+    private Date endTime;
 
-    // 数量
     private Integer num;
 
-    // 库存
     private Integer stockCount;
 
-    // 已销售数量
-    private Integer count;
+    private String introduction;
 
-    // 支付时间
-    private String payTime;
+    private Long seckillId;
 
-    // 地址
+    private BigDecimal money;
+
+    private String userId;
+
+    private Date payTime;
+
     private String receiverAddress;
 
-    public String getStatus() {
-        return status;
-    }
+    private String receiverMobile;
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private String receiver;
 
-    public void setCount(Integer count) {
-        this.count = count;
-    }
+    private String transactionId;
 
     public String getUsername() {
         return username;
@@ -68,20 +71,21 @@ public class SeckillOrderAndGood implements Serializable {
         this.username = username;
     }
 
-    public String getSellerId() {
-        return sellerId;
+
+    public Long getGoodsId() {
+        return goodsId;
     }
 
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public String getTitle() {
@@ -90,6 +94,14 @@ public class SeckillOrderAndGood implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSmallPic() {
+        return smallPic;
+    }
+
+    public void setSmallPic(String smallPic) {
+        this.smallPic = smallPic;
     }
 
     public BigDecimal getPrice() {
@@ -108,12 +120,52 @@ public class SeckillOrderAndGood implements Serializable {
         this.costPrice = costPrice;
     }
 
-    public BigDecimal getMoney() {
-        return money;
+    public String getSellerId() {
+        return sellerId;
     }
 
-    public void setMoney(BigDecimal money) {
-        this.money = money;
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getCheckTime() {
+        return checkTime;
+    }
+
+    public void setCheckTime(Date checkTime) {
+        this.checkTime = checkTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Integer getNum() {
@@ -132,19 +184,43 @@ public class SeckillOrderAndGood implements Serializable {
         this.stockCount = stockCount;
     }
 
-    public Integer getCount() {
-        return count;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setCount() {
-        this.count = this.num - this.stockCount;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
-    public String getPayTime() {
+    public Long getSeckillId() {
+        return seckillId;
+    }
+
+    public void setSeckillId(Long seckillId) {
+        this.seckillId = seckillId;
+    }
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Date getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(String payTime) {
+    public void setPayTime(Date payTime) {
         this.payTime = payTime;
     }
 
@@ -154,5 +230,44 @@ public class SeckillOrderAndGood implements Serializable {
 
     public void setReceiverAddress(String receiverAddress) {
         this.receiverAddress = receiverAddress;
+    }
+
+    public String getReceiverMobile() {
+        return receiverMobile;
+    }
+
+    public void setReceiverMobile(String receiverMobile) {
+        this.receiverMobile = receiverMobile;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

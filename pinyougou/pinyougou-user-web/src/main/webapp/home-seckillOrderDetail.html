@@ -10,9 +10,16 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
+	<script src="plugins/angularjs/angular.min.js"></script>
+	<script src="js/base.js"></script>
+	<script src="js/service/userService.js"></script>
+	<script src="js/controller/indexController.js"></script>
+	<script src="js/service/seckillOrderDetailService.js"></script>
+	<script src="js/controller/seckillOrderDetailController.js"></script>
+
 </head>
 
-<body>
+<body ng-app="pinyougou" ng-controller="seckillOrderDetailController" ng-init="getUsername();findOne()">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -197,67 +204,67 @@ $(function(){
                                         </div>
                                         <label>
                                             <span>提交订单</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
+                                            <span>{{year(resultMap.id.createTime)}}</span>
+                                            <span>{{day(resultMap.id.createTime)}}</span>
                                         </label>
                                     </div>
-                                    <div class="current">
+                                    <div class="{{returnS(resultMap.id.payTime)}}">
                                         <div class="wrap">
                                         <div class="round">2</div>
                                         <div class="bar"></div>
                                         </div>
                                         <label>
                                             <span>付款成功</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
+                                            <span>{{year(resultMap.id.payTime)}}</span>
+                                            <span>{{day(resultMap.id.payTime)}}</span>
                                         </label>
                                     </div>
-                                    <div class="todo">
+                                    <div class="{{returnS(resultMap.id.consignTime)}}">
                                         <div class="wrap">
                                         <div class="round">3</div>
                                         <div class="bar"></div>
                                         </div>
                                         <label>
                                             <span>发货</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
+                                            <span >{{year(resultMap.id.consignTime)}}</span>
+                                            <span>{{day(resultMap.id.consignTime)}}</span>
                                         </label>
                                     </div>
-                                    <div class="todo">
+                                    <div class="{{returnS(resultMap.id.endTime)}}">
                                         <div class="wrap">
                                         <div class="round">4</div>
                                         <div class="bar"></div>
                                         </div>
                                         <label>
                                             <span>确认收货</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
+                                            <span>{{year(resultMap.id.endTime)}}</span>
+                                            <span >{{day(resultMap.id.endTime)}}</span>
                                         </label>
                                     </div>
                                     
-                                    <div class="todo last">
+                                    <div class="{{returnS(resultMap.id.pingjiaTime)}}">
                                         <div class="wrap">
                                         <div class="round">5</div>
                                         </div>
                                         <label>
                                             <span>评价晒单</span>
-                                            <span>2016-06-27</span>
-                                            <span>13:03:53</span>
+                                            <span>{{year(resultMap.id.pingjiaTime)}}</span>
+                                            <span >{{day(resultMap.id.pingjiaTime)}}</span>
                                         </label>
                                     </div>
                                     </div>
                             </div>
                             <div class="order-state">
-                                <p>当前订单状态：<span class="red">已发货</span></p>
-                                <p>还剩06天00小时 自动确认收货</p>
+                                <p>当前订单状态：<span class="red">{{orderStatus[resultMap.id.status]}}</span></p>
+                                <p>还剩{{timestring}} 自动确认收货</p>
                             </div>
                         </div>
                         <div class="order-info">
                             <h5>订单信息</h5>
-                            <p>收货地址：神茶减肥茶就观察及噶盘滚啊  </p>
-                            <p>订单单号：178789758976986</p>
-                            <p>下单时间：2017-06-04 09：03：03</p>
-                            <p>支付时间：2017-06-05  09：03：03</p>
+                            <p>收货地址：{{resultMap.id.receiverAddress}}  </p>
+                            <p>订单单号：{{resultMap.id.id}}</p>
+                            <p>下单时间：{{setTime(resultMap.id.createTime)}}</p>
+                            <p>支付时间：{{setTime(resultMap.id.payTime)}}</p>
                             <p>支付方式：微信</p>
                             <p>发货时间：201707-06-06 09：03：03</p>
                         </div>
@@ -273,32 +280,32 @@ $(function(){
                              
                                 <tbody>                               
                                     <tr>
-                                        <td colspan="5">订单编号：787587819591509</td>
+                                        <td colspan="5">订单编号：{{resultMap.id.id}}</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <div class="typographic"><img src="img/goods.png" />
-                                                    <span>包邮 正品玛姬儿压缩面膜无纺布纸膜100粒 送泡瓶面膜刷喷瓶 新款</span>
-                                                    <span class="guige">规格：温泉喷雾150ml</span>
+                                            <div class="typographic"><img width="15%" src="{{resultMap.seckillId.smallPic}}" />
+                                                    <span>{{resultMap.seckillId.title}}</span>
+                                                   <!-- <span class="guige">规格：温泉喷雾150ml</span>-->
                                                 </div>
                                         </td>
                                         <td>
                                             <ul class="unstyled">
-                                                    <li class="o-price">¥599.00</li>	
-                                                    <li>¥299.00</li>											
+                                                    <li class="o-price">¥{{resultMap.seckillId.price}}</li>
+                                                    <li>¥{{resultMap.seckillId.costPrice}}</li>
                                                 </ul>
                                         </td>
                                         <td>1</td>
                                         <td>无优惠</td>
-                                        <td>交易成功</td>
+                                        <td>{{orderStatus[resultMap.id.status]}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                             <div class="order-price">
-                                <p>商品总金额：￥1.8</p>
+                                <p>商品总金额：￥{{resultMap.id.money}}</p>
                                 <p>运费金额：，免费用</p>
                                 <p>使用优惠券：无</p>
-                                <h4 class="red">实际支付：￥1.8</h4>
+                                <h4 class="red">实际支付：￥{{resultMap.id.money}}</h4>
                             </div>
                             <div class="clearfix"></div>
                         </div>

@@ -59,4 +59,5 @@ app.controller("seckillGoodsController", function ($scope, $location, $interval,
             }
         });
     };
+
 });

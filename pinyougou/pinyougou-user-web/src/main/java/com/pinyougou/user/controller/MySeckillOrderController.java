@@ -3,10 +3,7 @@ package com.pinyougou.user.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.seckill.service.SeckillOrderService;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -26,9 +23,17 @@ public class MySeckillOrderController {
      * @return 搜索结果
      */
     @PostMapping("/findMySeckillOrder")
-    public Map<Object, Object> findMySeckillOrder(){
+    public Map<String, Object> findMySeckillOrder(){
         // 查询登陆用户
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return seckillOrderService.findMySeckillOrder(username);
+    }
+
+    @GetMapping("/findOne")
+    public Map<String,Object> findOne(Long id){
+        System.out.println(id);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(username);
+        return seckillOrderService.findMyOneSeckillOrder(id,username);
     }
 }

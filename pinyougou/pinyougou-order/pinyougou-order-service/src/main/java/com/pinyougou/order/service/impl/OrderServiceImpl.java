@@ -45,8 +45,7 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
     private GoodsMapper goodsMapper;
     @Autowired
     private OrderAndGoodMapper orderAndGoodMapper;
-    @Autowired
-    private SeckillOrderAndGoodMapper seckillOrderAndGoodMapper;
+
 
     @Override
     public PageResult search(Integer page, Integer rows, TbOrder order) {
@@ -185,17 +184,6 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
         List<OrderAndGood> list = orderAndGoodMapper.findOrderAndGood(orderAndGood);
 
         PageInfo<OrderAndGood> pageInfo = new PageInfo<>(list);
-
-        return new PageResult(pageInfo.getTotal(), pageInfo.getList());
-    }
-
-    @Override
-    public PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood) {
-        // 分页
-        PageHelper.startPage(page,rows);
-        List<SeckillOrderAndGood> list = seckillOrderAndGoodMapper.findSeckillOrderAndGood(seckillOrderAndGood);
-
-        PageInfo<SeckillOrderAndGood> pageInfo = new PageInfo<>(list);
 
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }

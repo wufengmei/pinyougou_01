@@ -41,5 +41,4 @@ public interface OrderService extends BaseService<TbOrder> {
      */
     PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 
-    PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood);
 }

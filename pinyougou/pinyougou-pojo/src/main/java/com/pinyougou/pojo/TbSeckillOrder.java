@@ -38,6 +38,13 @@ public class TbSeckillOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // 以下是新增字段
+    private Date consignTime;
+    private Date endTime;
+    private Date closeTime;
+    private Date pingjiaTime;
+    private String pingjia;
+
     public Long getId() {
         return id;
     }
@@ -132,5 +139,45 @@ public class TbSeckillOrder implements Serializable {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public Date getConsignTime() {
+        return consignTime;
+    }
+
+    public void setConsignTime(Date consignTime) {
+        this.consignTime = consignTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(Date closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    public Date getPingjiaTime() {
+        return pingjiaTime;
+    }
+
+    public void setPingjiaTime(Date pingjiaTime) {
+        this.pingjiaTime = pingjiaTime;
+    }
+
+    public String getPingjia() {
+        return pingjia;
+    }
+
+    public void setPingjia(String pingjia) {
+        this.pingjia = pingjia;
     }
 }

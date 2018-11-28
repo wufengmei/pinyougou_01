@@ -221,44 +221,44 @@
 							</div>
 
 							<!--order2-->
-							<div class="choose-title" ng-repeat="transaction in resultMap.rows">
+							<div class="choose-title" ng-repeat="order in resultMap.rows">
 								<label data-toggle="checkbox" class="checkbox-pretty ">
-									<input type="checkbox" checked="checked"><span> {{transaction.payTime}}　订单编号：{{transaction.transactionId}}  店铺：{{transaction.sellerId}} <a>和我联系</a></span>
+									<input type="checkbox" checked="checked"><span> {{order.id.createTime}}　订单编号：{{order.id.id}}  店铺：{{order.id.sellerId}} <a>和我联系</a></span>
 								</label>
 								<a class="sui-btn btn-info share-btn">分享</a>
 
 							<table class="sui-table table-bordered order-datatable">
 								<tbody>
-								<tr ng-repeat="goods in transaction.seckillId">
-									<td width="30%" >
-										<div class="typographic"><img width="20%" src="{{goods.smallPic}}" />
-											<a href="http://seckill.pinyougou.com/seckill-item.html#?id={{goods.id}}" target='_blank' class="block-text" >{{goods.title}}</a>
+								<tr>
+									<td width="25%" >
+										<div class="typographic"><img width="20%" src="{{order.seckillId.smallPic}}" />
+											<a href="http://seckill.pinyougou.com/seckill-item.html#?id={{order.seckillId.id}}" target='_blank' class="block-text" >{{order.seckillId.title}}</a>
 										</div>
 									</td>
 									<td width="2%" class="center">
 										<ul class="unstyled">
-											<li class="o-price">¥{{goods.price}}</li>
-											<li>¥{{goods.costPrice}}</li>
+											<li class="o-price">¥{{order.seckillId.price}}</li>
+											<li>¥{{order.seckillId.costPrice}}</li>
 										</ul>
 
 
 									</td >
 									<td width="5%" class="center">1</td>
-									<td width="10%" ng-if="$index == 0"  class="center" rowspan="{{transaction.seckillId.length}}">
+									<td width="10%"   class="center" rowspan="1">
 										<ul class="unstyled">
-											<li>¥{{transaction.money}}</li>
+											<li>¥{{order.id.money}}</li>
 											<li>（含运费：￥0.00）</li>
 										</ul>
 									</td>
-									<td width="5%" ng-if="$index == 0"  class="center" rowspan="{{transaction.seckillId.length}}">
+									<td width="5%"   class="center" rowspan="1">
 										<ul class="unstyled">
 											<li>部分发货</li>
-											<li><a href="home-seckillOrderDetail.html#?id={{goods.id}}" target='_blank' class="btn">订单详情 </a></li>
+											<li><a href="home-seckillOrderDetail.html#?id={{order.outTradeNo}}" target='_blank' class="btn">订单详情</a></li>
 										</ul>
 									</td>
-									<td width="5%" ng-if="$index == 0"  class="center" rowspan="{{transaction.seckillId.length}}">
+									<td width="5%"   class="center" rowspan="1">
 										<ul class="unstyled">
-											<li><a href="orderDetail.html" class="btn">{{orderStatus[transaction.status]}} </a></li>
+											<li><a href="orderDetail.html" class="btn">{{orderStatus[order.id.status]}} </a></li>
 										</ul>
 									</td>
 								</tr>
