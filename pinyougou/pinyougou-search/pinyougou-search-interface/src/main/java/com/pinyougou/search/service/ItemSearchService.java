@@ -24,4 +24,6 @@ public interface ItemSearchService {
      * @param goodsIdList 商品spu id 集合
      */
     void deleteItemsByGoodsIds(List<Long> goodsIdList);
+
+    Map<String, Object> searchBySeller(String seller);
 }
