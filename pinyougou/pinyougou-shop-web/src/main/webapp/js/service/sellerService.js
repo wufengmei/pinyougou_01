@@ -27,6 +27,10 @@ app.service("sellerService",function ($http) {
 
     this.search = function (page, rows, searchEntity) {
         return $http.post("../seller/search.do?page=" + page + "&rows=" + rows, searchEntity);
+    }
+        //修改密码
+        this.updatePassword = function (password) {
+            return $http.post("../seller/updatePassword.do",password);
+        }
 
-    };
 });
