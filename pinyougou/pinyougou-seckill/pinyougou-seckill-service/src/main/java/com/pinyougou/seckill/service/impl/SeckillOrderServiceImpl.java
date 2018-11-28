@@ -300,4 +300,17 @@ public class SeckillOrderServiceImpl extends BaseServiceImpl<TbSeckillOrder> imp
         //参数2：更新条件对应where子句
         seckillOrderMapper.updateByExampleSelective(seckillOrder, example);
     }
+
+    @Override
+    public void updateEndTime(Long id) {
+        // 获取订单
+        TbSeckillOrder seckillOrder = findOne(id);
+        // 改变状态
+        seckillOrder.setStatus("3");
+        // 成功交易的时间
+        seckillOrder.setEndTime(new Date());
+
+        // 修改
+        update(seckillOrder);
+    }
 }

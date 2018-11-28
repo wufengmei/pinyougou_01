@@ -2,6 +2,7 @@ package com.pinyougou.user.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.seckill.service.SeckillOrderService;
+import com.pinyougou.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +36,23 @@ public class MySeckillOrderController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(username);
         return seckillOrderService.findMyOneSeckillOrder(id,username);
+    }
+
+    /**
+     * 确认收货后的操作
+     * @return  操作结果
+     */
+    @GetMapping("/updateEndTime")
+    public Result updateEndTime(Long id){
+        Result result = Result.fail("确认收货失败");
+        try {
+            // 修改状态和交易成功时间
+            seckillOrderService.updateEndTime(id);
+            return Result.ok("交易成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }

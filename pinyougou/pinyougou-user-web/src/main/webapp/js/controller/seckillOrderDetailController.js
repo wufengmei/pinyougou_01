@@ -14,8 +14,8 @@ app.controller("seckillOrderDetailController", function ($scope,$location, secki
             $scope.resultMap = response;
 
             //倒计时总秒数  20分钟后
-            if (response.id.status='2'){
-                var allSeconds = Math.floor((new Date(response.id.consignTime+20*60*1000).getTime() - new Date().getTime()) / 1000);
+            if (response.id.status=='2'){
+                var allSeconds = Math.floor((new Date(response.id.consignTime+1*60*1000).getTime() - new Date().getTime()) / 1000);
                 /**
                  * $interval定时器内部服务对象
                  * 参数1：要执行的方法
@@ -28,13 +28,27 @@ app.controller("seckillOrderDetailController", function ($scope,$location, secki
                         $scope.timestring = convertTimeString(allSeconds);
                     } else {
                         $interval.cancel(task);
-                        alert("秒杀活动已结束。");
+                        // 修改该订单的状态号和交易成功时间
+                        updateEndTime($location.search()["id"]);
                     }
                 }, 1000);
             }
 
         });
 
+    };
+
+    // 修改该订单的状态号和交易成功时间
+    updateEndTime = function (id) {
+        seckillOrderDetailService.updateEndTime(id).success(function (response) {
+            if (response.success){
+                // 刷新页面
+                findOne();
+            } else {
+                alert(response.message);
+            }
+
+        })
     };
 
     convertTimeString = function (allSeconds) {

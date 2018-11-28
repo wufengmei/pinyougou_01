@@ -45,4 +45,6 @@ public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
     PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood);
 
     void updateStatus(Long[] ids, String status);
+
+    void updateEndTime(Long id);
 }
