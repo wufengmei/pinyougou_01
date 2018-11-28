@@ -37,18 +37,16 @@ public interface OrderService extends BaseService<TbOrder> {
 
 
     /**
-    List findOrderListByUsername(String username);
+
      * 查询商家对应的所有订单列表
-
      * @param page 第几页
-    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
-
      * @param rows 页大小
      * @param orderAndGood 订单条件
-    TbPayLog findOutTradeNo(String orderId);
      * @return  订单列表和总页数
-
      */
+    TbPayLog findOutTradeNo(String orderId);
+    List findOrderListByUsername(String username);
+    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
     TbOrderItem findOrderItemById(String itemId);
     PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 
