@@ -1,4 +1,4 @@
-package com.pinyougou.cart.controller;
+package com.pinyougou.user.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
@@ -8,7 +8,7 @@ import com.pinyougou.pojo.TbAddress;
 import com.pinyougou.pojo.TbAreas;
 import com.pinyougou.pojo.TbCities;
 import com.pinyougou.pojo.TbProvinces;
-import com.pinyougou.cart.service.AddressService;
+import com.pinyougou.user.service.AddressService;
 import com.pinyougou.vo.PageResult;
 import com.pinyougou.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;

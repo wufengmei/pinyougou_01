@@ -1,9 +1,4 @@
-app.service("addressService", function ($http) {
-
-    this.findAddressList = function () {
-        return $http.get("address/findAddressList.do");
-
-    };
+app.service("addressService",function($http){
     this.getAddressInformation = function () {
         return $http.get("address/getAddressInformation.do?r=" + Math.random());
     };
@@ -22,6 +17,8 @@ app.service("addressService", function ($http) {
     this.insertAddressInformation = function (thisUserInfromation) {
         return $http.post("address/insertAddressInformation.do?r="+ Math.random(),thisUserInfromation)
     };
+
+
     this.findProvince = function () {
         return $http.get("address/findProvince.do?r=" + Math.random())
     };

@@ -1,4 +1,4 @@
-package com.pinyougou.user.service;
+package com.pinyougou.cart.service;
 
 import com.pinyougou.pojo.TbAddress;
 import com.pinyougou.pojo.TbAreas;

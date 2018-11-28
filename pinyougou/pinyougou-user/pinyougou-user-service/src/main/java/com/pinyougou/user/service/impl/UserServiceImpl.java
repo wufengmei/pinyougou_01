@@ -158,4 +158,9 @@ public class UserServiceImpl extends BaseServiceImpl<TbUser> implements UserServ
         userMapper.updateByPrimaryKeySelective(tbUser);
     }
 
+    @Override
+    public void updateByExample(TbUser tbUser) {
+        userMapper.updateByPrimaryKeySelective(tbUser);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.pinyougou.user.service.impl;
+package com.pinyougou.cart.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
@@ -12,7 +12,7 @@ import com.pinyougou.pojo.TbAreas;
 import com.pinyougou.pojo.TbCities;
 import com.pinyougou.pojo.TbProvinces;
 import com.pinyougou.service.impl.BaseServiceImpl;
-import com.pinyougou.user.service.AddressService;
+import com.pinyougou.cart.service.AddressService;
 import com.pinyougou.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;

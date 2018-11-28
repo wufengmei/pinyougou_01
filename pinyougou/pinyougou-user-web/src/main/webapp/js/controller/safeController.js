@@ -1,5 +1,7 @@
-app.controller("indexController", function ($scope, userService) {
-    $scope.userInformation = {};
+app.controller("safeController", function ($scope, addressService,userService) {
+
+    $scope.password = {};
+
     $scope.getUsername = function () {
         userService.getUsername().success(function (response) {
             $scope.username = response.username;
@@ -15,15 +17,5 @@ app.controller("indexController", function ($scope, userService) {
             // document.getElementById('select_year2').value
         })
     };
-    $scope.updateUserInformation = function (userInformation) {
-
-        userService.updateUserInformation(userInformation).success(function (response) {
-            alert("信息保存成功");
-            return;
-        }).fail(function (response) {
-            alert("信息保存失败，请检查网络")
-        })
-    };
-
 
 });

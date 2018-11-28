@@ -28,4 +28,6 @@ public interface UserService extends BaseService<TbUser> {
     Map<String,Object> getUserInformation(String username);
 
     void updateUserInformation(String information, String username) throws ParseException;
+
+    void updateByExample(TbUser tbUser);
 }

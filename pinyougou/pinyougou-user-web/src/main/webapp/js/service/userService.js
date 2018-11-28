@@ -2,7 +2,6 @@ app.service("userService",function($http){
 
     this.register = function (entity, smsCode) {
         return $http.post("user/add.do?smsCode=" + smsCode, entity);
-
     };
 
     this.sendSmsCode = function (phone) {
@@ -17,5 +16,8 @@ app.service("userService",function($http){
     };
     this.updateUserInformation = function (userInformation) {
         return $http.post("user/updateUserInformation.do",userInformation);
+    };
+    this.checkPassword = function (password) {
+        return $http.post("user/checkPassword.do",password);
     };
 });
