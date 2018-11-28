@@ -215,7 +215,7 @@
 								<div class="control-group">
 									<label for="inputName" class="control-label">昵称：</label>
 									<div class="controls">
-										<input type="text" id="inputName" name="email" placeholder="昵称" ng-model="userInformation.nickName" value="userInformation.nickName">
+										<input type="text" id="inputName" name="email" placeholder="昵称" ng-required="true" ng-model="userInformation.nickName" value="userInformation.nickName">
 									</div>
 								</div>
 								<div class="control-group">
@@ -232,9 +232,9 @@
 								<div class="control-group">
 									<label for="inputPassword" class="control-label">生日：</label>
 									<div class="controls">
-										<select id="select_year2" rel="" ng-model="userInformation.birthdayYear"></select>年
-										<select id="select_month2" rel="" ng-model="userInformation.birthdayMonth"></select>月
-										<select id="select_day2" rel="" ng-model="userInformation.birthdayDay"></select>日
+										<select id="select_year2" rel="" ng-required="true" ng-model="userInformation.birthdayYear"></select>年
+										<select id="select_month2" rel="" ng-required="true" ng-model="userInformation.birthdayMonth"></select>月
+										<select id="select_day2" rel="" ng-required="true" ng-model="userInformation.birthdayDay"></select>日
 									</div>
 								</div>
 

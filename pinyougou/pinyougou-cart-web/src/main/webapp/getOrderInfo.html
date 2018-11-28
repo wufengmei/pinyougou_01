@@ -106,7 +106,7 @@
 											<div class="control-group">
 												<label class="control-label">收货人：</label>
 												<div class="controls">
-													<input type="text" class="input-medium" ng-model="thisUserInfromation.contact">
+													<input type="text" class="input-medium" ng-model="thisUserInfromation.contact" ng-required="true" >
 												</div>
 											</div>
 											<div class="control-group">
@@ -115,13 +115,13 @@
 
 													<div data-toggle="distpicker">
 
-														<select ng-model="thisUserInfromation.addressMap.provinceName" ng-options="province as province.province for province in provinceList" ng-change="findCities(thisUserInfromation.addressMap.provinceName.provinceId)">
+														<select ng-required="true" ng-model="thisUserInfromation.addressMap.provinceName" ng-options="province as province.province for province in provinceList" ng-change="findCities(thisUserInfromation.addressMap.provinceName.provinceId)">
 														</select>
 
-														<select ng-model="thisUserInfromation.addressMap.cityName" ng-options="city as city.city for city in citiesList" ng-change="findAreas(thisUserInfromation.addressMap.cityName.cityId)">
+														<select ng-required="true" ng-model="thisUserInfromation.addressMap.cityName" ng-options="city as city.city for city in citiesList" ng-change="findAreas(thisUserInfromation.addressMap.cityName.cityId)">
 														</select>
 
-														<select ng-model="thisUserInfromation.addressMap.townName" ng-options="town as town.area for town in areasList">
+														<select ng-required="true" ng-model="thisUserInfromation.addressMap.townName" ng-options="town as town.area for town in areasList">
 
 														</select>
 
@@ -146,13 +146,13 @@
 											<div class="control-group">
 												<label class="control-label">详细地址：</label>
 												<div class="controls">
-													<input type="text" class="input-large" ng-model="thisUserInfromation.address">
+													<input type="text" class="input-large" ng-required="true" ng-model="thisUserInfromation.address">
 												</div>
 											</div>
 											<div class="control-group">
 												<label class="control-label">联系电话：</label>
 												<div class="controls">
-													<input type="text" class="input-medium" ng-model="thisUserInfromation.mobile">
+													<input type="text" class="input-medium" ng-required="true" ng-model="thisUserInfromation.mobile">
 												</div>
 											</div>
 											<div class="control-group">
@@ -164,7 +164,7 @@
 											<div class="control-group">
 												<label class="control-label">地址别名：</label>
 												<div class="controls">
-													<input type="text" class="input-medium" ng-model="thisUserInfromation.alias">
+													<input type="text" class="input-medium" ng-required="true" ng-model="thisUserInfromation.alias">
 												</div>
 												<div class="othername">
 													建议填写常用地址：<a href="#" class="sui-btn btn-default" ng-click="thisUserInfromation.alias = '家里'">家里</a>　<a href="#" class="sui-btn btn-default" ng-click="thisUserInfromation.alias = '父母家'">父母家</a>　<a href="#" class="sui-btn btn-default" ng-click="thisUserInfromation.alias = '公司'">公司</a>

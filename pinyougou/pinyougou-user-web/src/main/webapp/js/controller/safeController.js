@@ -1,6 +1,7 @@
-app.controller("safeController", function ($scope, addressService,userService) {
+app.controller("safeController", function ($scope, addressService, userService) {
 
     $scope.password = {};
+    $scope.userInformation = {};
 
     $scope.getUsername = function () {
         userService.getUsername().success(function (response) {
@@ -14,7 +15,17 @@ app.controller("safeController", function ($scope, addressService,userService) {
             $scope.userInformation.birthdayYear = response.birthdayYear;
             $scope.userInformation.birthdayMonth = response.birthdayMonth;
             $scope.userInformation.birthdayDay = response.birthdayDay;
-            // document.getElementById('select_year2').value
+        })
+    };
+    $scope.submitPassword = function (password) {
+        userService.checkPassword(password).success(function (response) {
+            if(response.success){
+                alert(response.message);
+                location.href = "/logout/cas?service=http://user.pinyougou.com";
+
+            }else{
+                alert(response.message);
+            }
         })
     };
 
