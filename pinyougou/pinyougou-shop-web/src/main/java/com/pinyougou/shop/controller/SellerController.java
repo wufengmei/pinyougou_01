@@ -95,6 +95,7 @@ public class SellerController {
     @RequestMapping("/updatePassword")
     public Result updatePassword(@RequestBody Password password){
         try{
+            //对密码进行加密
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String newPwd = passwordEncoder.encode(password.getNewPwd());
             //获取用户名
