@@ -4,22 +4,26 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.common.util.IdWorker;
+import com.pinyougou.mapper.*;
+import com.pinyougou.pojo.*;
 import com.pinyougou.mapper.ItemMapper;
 import com.pinyougou.mapper.OrderItemMapper;
 import com.pinyougou.mapper.OrderMapper;
 import com.pinyougou.mapper.PayLogMapper;
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.TbOrder;
-import com.pinyougou.pojo.TbOrderItem;
-import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.service.impl.BaseServiceImpl;
 import com.pinyougou.vo.Cart;
+import com.pinyougou.vo.Order;
 import com.pinyougou.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -44,15 +48,22 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
     @Autowired
     private PayLogMapper payLogMapper;
 
+    @Autowired
+    private GoodsMapper goodsMapper;
+    @Autowired
+    private OrderAndGoodMapper orderAndGoodMapper;
+    @Autowired
+    private SeckillOrderAndGoodMapper seckillOrderAndGoodMapper;
+
     @Override
     public PageResult search(Integer page, Integer rows, TbOrder order) {
         PageHelper.startPage(page, rows);
 
         Example example = new Example(TbOrder.class);
         Example.Criteria criteria = example.createCriteria();
-        /*if(!StringUtils.isEmpty(order.get***())){
-            criteria.andLike("***", "%" + order.get***() + "%");
-        }*/
+        if(!StringUtils.isEmpty(order.getSellerId())){
+            criteria.andLike("sellerId", "%" + order.getSellerId() + "%");
+        }
 
         List<TbOrder> list = orderMapper.selectByExample(example);
         PageInfo<TbOrder> pageInfo = new PageInfo<>(list);
@@ -218,5 +229,34 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
         List<TbOrder> tbOrderList = orderMapper.select(tbOrder);
 
         return tbOrderList.get(0);
+    }
+
+    /**
+     * 查询商家对应的所有订单列表
+     * @param page 第几页
+     * @param rows 页大小
+     * @param orderAndGood 订单条件
+     * @return  订单列表和总页数
+     */
+    @Override
+    public PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood) {
+        // 分页
+        PageHelper.startPage(page,rows);
+        List<OrderAndGood> list = orderAndGoodMapper.findOrderAndGood(orderAndGood);
+
+        PageInfo<OrderAndGood> pageInfo = new PageInfo<>(list);
+
+        return new PageResult(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    @Override
+    public PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood) {
+        // 分页
+        PageHelper.startPage(page,rows);
+        List<SeckillOrderAndGood> list = seckillOrderAndGoodMapper.findSeckillOrderAndGood(seckillOrderAndGood);
+
+        PageInfo<SeckillOrderAndGood> pageInfo = new PageInfo<>(list);
+
+        return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
 }
