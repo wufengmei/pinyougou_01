@@ -261,17 +261,52 @@ $(function(){
                                             </td>
                                             <td width="10%" class="center">
                                                 <ul class="unstyled">
-                                                    <li>等待卖家付款</li>
+                                                    <li>
+														<p ng-if="order.status==1">未付款</p>
+														<p ng-if="order.status==2">已付款</p>
+														<p ng-if="order.status==3">未发货</p>
+														<p ng-if="order.status==4">已发货</p>
+														<p ng-if="order.status==5">交易成功</p>
+														<p ng-if="order.status==6">交易关闭</p>
+														<p ng-if="order.status==7">已评价</p>
+
+													</li>
                                                     <li><a href="home-orderDetail.html#?orderId={{order.orderId}}" class="btn">订单详情 </a></li>
                                                 </ul>
                                             </td>
                                             <td width="10%" class="center">
                                                 <ul class="unstyled">
+													<li>
+														<p ng-if="order.status==1">
+															<a class="sui-btn btn-info" href="pay.html#?orderId={{order.orderId}}">立即付款</a><br>
+															<a href="cancel.html#?orderId={{order.orderId}}">取消订单</a>
+														</p>
 
-													<li><a class="sui-btn btn-info" href="pay.html#?orderId={{order.orderId}}">立即付款</a></li>
 
-                                                    <li>取消订单</li>
-                                                    
+
+														<p ng-if="order.status==2">
+															<a class="sui-btn btn-info" href="tuikuan.html#?orderId={{order.orderId}}">退款</a>
+														</p>
+
+														<p ng-if="order.status==3">
+															<a class="sui-btn btn-info" >提醒发货</a>
+														</p>
+
+														<p ng-if="order.status==4">
+															<a class="sui-btn btn-info" >查看物流</a>
+														</p>
+
+														<p ng-if="order.status==5">
+															<a class="sui-btn btn-info" >待评价</a>
+														</p>
+
+														<p ng-if="order.status==6">
+															<a class="sui-btn btn-info" >重新下单</a>
+														</p>
+														<p ng-if="order.status==7">
+															<a class="sui-btn btn-info" >晒一晒</a>
+														</p>
+													</li>
                                                 </ul>
                                             </td>
                                         </tr>

@@ -41,5 +41,5 @@ public interface OrderService extends BaseService<TbOrder> {
 
     TbOrderItem findOrderItemById(String itemId);
 
-    List<TbOrder> findOrderById(String orderId);
+    TbOrder findOrderById(String orderId);
 }

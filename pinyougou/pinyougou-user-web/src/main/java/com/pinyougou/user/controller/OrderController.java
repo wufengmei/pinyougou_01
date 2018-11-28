@@ -8,11 +8,14 @@ import com.pinyougou.pay.service.WeixinPayService;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
+import com.pinyougou.vo.OrderVo;
 import com.pinyougou.vo.PageResult;
 import com.pinyougou.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,11 +120,45 @@ public class OrderController {
         TbOrderItem tbOrderItem = orderService.findOrderItemById(orderItemId);
         return JSON.toJSONString(tbOrderItem, SerializerFeature.WriteNonStringValueAsString);
     }
+
     @GetMapping("/findOrderById")
     public String findOrderById(String orderId){
-        List<TbOrder> orderList = orderService.findOrderById(orderId);
-
-        return JSON.toJSONString(orderList, SerializerFeature.WriteNonStringValueAsString);
+        TbOrder order = orderService.findOrderById(orderId);
+        OrderVo orderVo = new OrderVo();
+        orderVo.setTbOrder(order);
+        //获取create时间
+        Date createTime = order.getCreateTime();
+        String dateYmd = null;
+        String dateHms = null;
+        if (createTime!=null) {
+            //设置格式化时间
+            dateYmd = getDateYmd(createTime);
+            orderVo.setCreateTime(dateYmd);
+            dateHms = getDateHms(createTime);
+            orderVo.setCreateTime1(dateHms);
+        }
+        //获取payment时间
+        Date paymentTime = order.getPaymentTime();
+        if (paymentTime!=null) {
+            //设置格式化时间
+            String dateYmd1 = getDateYmd(paymentTime);
+            orderVo.setPaymentTime(dateYmd1);
+            String dateHms1 = getDateHms(paymentTime);
+            orderVo.setPaymentTime1(dateHms1);
+        }
+        List<TbOrderItem> orderItemList = orderService.findOrderItemListByOrderId(order.getOrderId());
+        orderVo.setOrderItemList(orderItemList);
+        return JSON.toJSONString(orderVo, SerializerFeature.WriteNonStringValueAsString);
+    }
+    public String getDateYmd(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(date);
+        return dateString;
+    }
+    public String getDateHms(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        String dateString = formatter.format(date);
+        return dateString;
     }
     @GetMapping("/findOutTradeNo")
     public Map<String, String> findOutTradeNo(String orderId){

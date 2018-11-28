@@ -172,7 +172,7 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
         Example example = new Example(TbOrder.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userId",username);
-        criteria.andEqualTo("status","1");
+
         List<TbOrder> orderList = orderMapper.selectByExample(example);
         return orderList;
 
@@ -211,12 +211,12 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
     }
 
     @Override
-    public List<TbOrder> findOrderById(String orderId) {
+    public TbOrder findOrderById(String orderId) {
         long id = Long.parseLong(orderId);
         TbOrder tbOrder = new TbOrder();
         tbOrder.setOrderId(id);
         List<TbOrder> tbOrderList = orderMapper.select(tbOrder);
 
-        return tbOrderList;
+        return tbOrderList.get(0);
     }
 }
