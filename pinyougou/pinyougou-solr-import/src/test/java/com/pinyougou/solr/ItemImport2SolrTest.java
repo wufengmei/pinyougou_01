@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -40,6 +41,15 @@ public class ItemImport2SolrTest {
         //3、导入数据
         solrTemplate.saveBeans(itemList);
 
+        solrTemplate.commit();
+    }
+    @Test
+    public void test1(){
+        // 创建查询对象
+        SimpleQuery query = new SimpleQuery("*:*");
+        // 删除所有
+        solrTemplate.delete(query);
+        // 提交
         solrTemplate.commit();
     }
 }
