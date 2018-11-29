@@ -29,7 +29,7 @@ app.controller("seckillOrderDetailController", function ($scope,$location, secki
                     } else {
                         $interval.cancel(task);
                         // 修改该订单的状态号和交易成功时间
-                        updateEndTime($location.search()["id"]);
+                        location.reload();
                     }
                 }, 1000);
             }

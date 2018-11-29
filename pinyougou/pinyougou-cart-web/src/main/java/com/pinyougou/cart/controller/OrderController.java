@@ -40,6 +40,7 @@ public class OrderController {
             order.setUserId(userId);
             //订单下单来源 PC端
             order.setSourceType("2");
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
             String outTradeNo = orderService.addOrder(order);
             return Result.ok(outTradeNo);
         } catch (Exception e) {

@@ -64,6 +64,7 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
 
     @Override
     public String addOrder(TbOrder order) {
+
         //支付日志id
         String outTradeNo = "";
         //1、查询购物车中的所有商品
