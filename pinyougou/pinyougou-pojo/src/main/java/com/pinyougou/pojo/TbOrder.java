@@ -18,8 +18,6 @@ import java.util.List;
 @Table(name = "tb_order")
 public class TbOrder implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private List<TbOrderItem> orderItemList;
 
     public List<TbOrderItem> getOrderItemList() {
@@ -30,6 +28,8 @@ public class TbOrder implements Serializable {
         this.orderItemList = orderItemList;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonSerialize(using = LongJsonSerializer.class)
     @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long orderId;

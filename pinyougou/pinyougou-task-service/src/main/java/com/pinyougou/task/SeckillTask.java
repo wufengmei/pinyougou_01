@@ -1,7 +1,11 @@
 package com.pinyougou.task;
 
+import com.pinyougou.mapper.OrderMapper;
 import com.pinyougou.mapper.SeckillGoodsMapper;
+import com.pinyougou.mapper.SeckillOrderMapper;
+import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbSeckillGoods;
+import com.pinyougou.pojo.TbSeckillOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,6 +28,10 @@ public class SeckillTask {
 
     @Autowired
     private SeckillGoodsMapper seckillGoodsMapper;
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
+    private SeckillOrderMapper seckillOrderMapper;
 
     /**
      * 如果有*新的可使用的* 秒杀商品数据的话；
@@ -87,6 +95,46 @@ public class SeckillTask {
                 }
             }
 
+        }
+    }
+
+    // 每个1秒刷新下已发货，并且距离发货时间一分钟，更新为交易成功状态
+    @Scheduled(cron = "* * * * * ?")
+    public void updateOrder() {
+        // 扫描数据库的普通订单，获取已发货的订单列表
+        TbOrder order = new TbOrder();
+        order.setStatus("2");
+        List<TbOrder> orderList = orderMapper.select(order);
+
+
+        if (orderList != null && orderList.size() >0){
+            for (TbOrder tbOrder : orderList) {
+                if ( (tbOrder.getConsignTime().getTime() +60*1000)< System.currentTimeMillis()){
+                    // 改状态为已交易
+                    tbOrder.setStatus("3");
+                    tbOrder.setEndTime(new Date());
+                    orderMapper.updateByPrimaryKey(tbOrder);
+                }
+            }
+        }
+    }
+    //  // 每个1秒刷新下已发货，并且距离发货时间一分钟，更新为交易成功状态
+    @Scheduled(cron = "* * * * * ?")
+    public void updateSeckillOrder(){
+        // 扫描数据库的普通订单和秒杀订单，获取已发货的订单列表
+        TbSeckillOrder seckillOrder = new TbSeckillOrder();
+        seckillOrder.setStatus("2");
+        List<TbSeckillOrder> seckillOrderList = seckillOrderMapper.select(seckillOrder);
+
+        if (seckillOrderList != null && seckillOrderList.size() >0){
+            for (TbSeckillOrder tbSeckillOrder : seckillOrderList) {
+                if ((tbSeckillOrder.getConsignTime().getTime() +60*1000) < System.currentTimeMillis()){
+                    // 改状态为已交易
+                    tbSeckillOrder.setStatus("3");
+                    tbSeckillOrder.setEndTime(new Date());
+                    seckillOrderMapper.updateByPrimaryKey(tbSeckillOrder);
+                }
+            }
         }
     }
 }
