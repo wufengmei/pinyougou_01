@@ -212,6 +212,13 @@ public class GoodsServiceImpl extends BaseServiceImpl<TbGoods> implements GoodsS
         return goods;
     }
 
+    @Override
+    public TbItem findItemById(Long itemId) {
+
+       return itemMapper.selectByPrimaryKey(itemId);
+
+    }
+
     /**
      * 保存商品sku信息
      * @param goods 商品信息（基本、描述、sku列表）

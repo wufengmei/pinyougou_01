@@ -34,4 +34,10 @@ app.service("mallService",function($http){
     this.findItemBySeller = function (seller) {
         return $http.get("mall/findItemBySeller.do?seller="+seller + "&r=" + Math.random());
     }
+    this.addItem = function (itemId) {
+        return $http.get("cart/addItemToCartList.do?itemId="+itemId+"&num=1")
+    }
+    this.findItemById = function (itemId) {
+        return $http.get("mall/findItemById.do?itemId="+itemId)
+    }
 });

@@ -13,4 +13,6 @@ app.controller("indexController", function ($scope, contentService) {
     $scope.search = function () {
         location.href= "http://search.pinyougou.com/search.html#?keywords=" + $scope.keywords;
     };
+    
+
 });
