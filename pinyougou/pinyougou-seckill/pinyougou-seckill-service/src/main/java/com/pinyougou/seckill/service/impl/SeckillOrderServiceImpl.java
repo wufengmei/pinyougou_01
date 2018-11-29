@@ -313,4 +313,23 @@ public class SeckillOrderServiceImpl extends BaseServiceImpl<TbSeckillOrder> imp
         // 修改
         update(seckillOrder);
     }
+
+    @Override
+    public void updateCloseatus(Long[] ids, String status) {
+        //update tb_goods set audit_status=? where id in (?,?...)
+
+
+        TbSeckillOrder seckillOrder = new TbSeckillOrder();
+        seckillOrder.setStatus(status);
+        // 更新收货时间
+        seckillOrder.setCloseTime(new Date());
+
+
+        Example example = new Example(TbSeckillOrder.class);
+        example.createCriteria().andIn("id", Arrays.asList(ids));
+
+        //参数1：更新的内容也就是对应在update语句中的set
+        //参数2：更新条件对应where子句
+        seckillOrderMapper.updateByExampleSelective(seckillOrder, example);
+    }
 }

@@ -39,6 +39,7 @@
 
         <!-- 数据表格 -->
         <div class="table-box">
+            <button type="button" class="btn btn-default" ng-click="updateStatus('4')"><i class="fa fa-trash-o"></i>关闭交易</button>
             <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
 
             <!--工具栏-->
@@ -46,7 +47,10 @@
             <div class="box-tools pull-right">
                 <div class="has-feedback">
                     商家<input ng-model="searchEntity.sellerId" >
+                    订单编号<input ng-model="searchEntity.id" >
                     商品名称<input ng-model="searchEntity.title">
+                    订单状态<select ng-model="searchEntity.status" ng-options="x for (x, y) in status">
+                </select>
                         <div data-toggle="distpicker">
                             <table>
                                 <tr>
@@ -82,7 +86,11 @@
             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                 <thead>
                 <tr>
+                    <th class="" style="padding-right:0px">
+                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                    </th>
                     <th class="sorting_asc">商家</th>
+                    <th class="sorting_asc">订单编号</th>
                     <th class="sorting">商品名称</th>
                     <th class="sorting">原价</th>
                     <th class="sorting">秒杀价</th>
@@ -97,11 +105,13 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="entity in list">
+                    <td><input ng-click="updateSelection($event, entity.orderId)" type="checkbox"></td>
                     <td>{{entity.sellerId}}</td>
+                    <td>{{entity.orderId}}</td>
                     <td>{{entity.title}}</td>
                     <td>{{entity.price}}</td>
                     <td>{{entity.costPrice}}</td>
-                    <td>{{entity.payTime}}</td>
+                    <td>{{year(entity.payTime)}}</td>
                     <td>{{entity.money}}</td>
                     <td>{{entity.num}}</td>
                     <td>{{entity.num-entity.stockCount}}</td>

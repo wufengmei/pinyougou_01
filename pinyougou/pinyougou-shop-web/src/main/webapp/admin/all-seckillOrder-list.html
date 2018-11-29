@@ -40,7 +40,7 @@
 
         <!-- 数据表格 -->
         <div class="table-box">
-            <button type="button" class="btn btn-default" ng-click="updateStatus('2')"><i class="fa fa-trash-o"></i>提交发货</button>
+            <button type="button" class="btn btn-default" ng-click="updateStatus('3')"><i class="fa fa-trash-o"></i>提交发货</button>
             <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
 
 
@@ -52,7 +52,6 @@
                     订单编号<input ng-model="searchEntity.id" >
                     商品名称<input ng-model="searchEntity.title">
                     订单状态<select ng-model="searchEntity.status" ng-options="x for (x, y) in status">
-                    </select>
                     </select>
                         <div data-toggle="distpicker">
                             <table>

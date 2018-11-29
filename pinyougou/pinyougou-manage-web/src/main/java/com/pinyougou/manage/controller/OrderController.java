@@ -5,6 +5,7 @@ import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.OrderAndGood;
 import com.pinyougou.pojo.SeckillOrderAndGood;
 import com.pinyougou.pojo.TbOrder;
+import com.pinyougou.seckill.service.SeckillOrderService;
 import com.pinyougou.vo.PageResult;
 import com.pinyougou.vo.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,8 @@ public class OrderController {
 
     @Reference
     private OrderService orderService;
+    @Reference
+    private SeckillOrderService seckillOrderService;
 
     /**
      * 查询符合条件的普通订单列表
@@ -44,7 +47,19 @@ public class OrderController {
     public PageResult Seckillsearch(@RequestBody SeckillOrderAndGood seckillOrderAndGood, @RequestParam(value = "page", defaultValue = "1")Integer page,
                                     @RequestParam(value = "rows", defaultValue = "10")Integer rows) {
         seckillOrderAndGood.setUsername("");
-        return orderService.searchSeckillGoods(page, rows, seckillOrderAndGood);
+        return seckillOrderService.searchSeckillGoods(page, rows, seckillOrderAndGood);
+    }
+    @GetMapping("/updateStatus")
+    public Result updateStatus(Long[] ids, String status){
+        try {
+            seckillOrderService.updateCloseatus(ids, status);
+
+            return Result.ok("更新状态成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.fail("更新状态失败");
     }
 
 }
