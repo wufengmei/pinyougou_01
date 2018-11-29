@@ -1,5 +1,10 @@
 package com.pinyougou.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pinyougou.common.util.LongJsonDeserializer;
+import com.pinyougou.common.util.LongJsonSerializer;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -7,12 +12,26 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 
 @Table(name = "tb_order")
 public class TbOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private List<TbOrderItem> orderItemList;
+
+    public List<TbOrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<TbOrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
+    }
+
+    @JsonSerialize(using = LongJsonSerializer.class)
+    @JsonDeserialize(using = LongJsonDeserializer.class)
     private Long orderId;
 
     private BigDecimal payment;

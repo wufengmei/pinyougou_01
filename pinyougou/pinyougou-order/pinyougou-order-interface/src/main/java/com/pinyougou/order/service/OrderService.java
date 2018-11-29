@@ -3,9 +3,12 @@ package com.pinyougou.order.service;
 import com.pinyougou.pojo.OrderAndGood;
 import com.pinyougou.pojo.SeckillOrderAndGood;
 import com.pinyougou.pojo.TbOrder;
+import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.service.BaseService;
 import com.pinyougou.vo.PageResult;
+
+import java.util.List;
 
 public interface OrderService extends BaseService<TbOrder> {
 
@@ -32,13 +35,19 @@ public interface OrderService extends BaseService<TbOrder> {
      */
     void updateOrderStatus(String outTradeNo, String transaction_id);
 
+
     /**
+
      * 查询商家对应的所有订单列表
      * @param page 第几页
      * @param rows 页大小
      * @param orderAndGood 订单条件
      * @return  订单列表和总页数
      */
+    TbPayLog findOutTradeNo(String orderId);
+    List findOrderListByUsername(String username);
+    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
+    TbOrderItem findOrderItemById(String itemId);
     PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 
-}
+    TbOrder findOrderById(String orderId);}

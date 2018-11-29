@@ -1,6 +1,8 @@
 package com.pinyougou.user.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.pinyougou.common.util.PhoneFormatCheckUtils;
 import com.pinyougou.pojo.TbUser;
 import com.pinyougou.user.service.UserService;
@@ -10,6 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +26,15 @@ public class UserController {
     @Reference
     private UserService userService;
 
+    private HttpServletRequest request;
+
     /**
      * 获取当前登录的用户名
+     *
      * @return 用户信息
      */
     @GetMapping("/getUsername")
-    public Map<String, Object> getUsername(){
+    public Map<String, Object> getUsername() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         resultMap.put("username", username);
@@ -139,6 +145,58 @@ public class UserController {
     public PageResult search(@RequestBody TbUser user, @RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "rows", defaultValue = "10") Integer rows) {
         return userService.search(page, rows, user);
+    }
+
+    @GetMapping("/getUserInformation")
+    public Map<String, Object> getUserInformation() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        resultMap = userService.getUserInformation(username);
+        return resultMap;
+    }
+
+    @PostMapping("/updateUserInformation")
+    public Result updateUserInformation(@RequestBody String information) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            userService.updateUserInformation(information, username);
+            return Result.ok("保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.fail("保存失败");
+    }
+
+    @PostMapping("/checkPassword")
+    public Result checkPassword(@RequestBody String password) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        JSONObject jsonObject = JSON.parseObject(password);
+        String oldPasswordMD5 = DigestUtils.md5Hex((String) jsonObject.get("oldPassword"));
+        String newPasswordMD5 = DigestUtils.md5Hex((String) jsonObject.get("newPassword"));
+        String newPasswordRepeatMD5 = DigestUtils.md5Hex((String) jsonObject.get("newPasswordRepeat"));
+
+        TbUser tempTbUser = new TbUser();
+        tempTbUser.setUsername(username);
+        List<TbUser> user = userService.findByWhere(tempTbUser);
+        try {
+            String passwordInDb = user.get(0).getPassword();
+            if (oldPasswordMD5.equals(passwordInDb)) {
+                if (newPasswordMD5.equals(newPasswordRepeatMD5)) {
+                    TbUser tbUser = user.get(0);
+                    tbUser.setPassword(newPasswordRepeatMD5);
+                    userService.updateByExample(tbUser);
+
+                    return Result.ok("修改密码成功,请重新登陆");
+                }else {
+                    return Result.fail("两次密码不一致");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.fail("原密码不正确");
     }
 
 }

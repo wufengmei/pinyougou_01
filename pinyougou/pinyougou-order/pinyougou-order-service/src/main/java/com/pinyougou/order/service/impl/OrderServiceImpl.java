@@ -5,11 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pinyougou.common.util.IdWorker;
 import com.pinyougou.mapper.*;
-import com.pinyougou.pojo.*;
 import com.pinyougou.order.service.OrderService;
+import com.pinyougou.pojo.*;
 import com.pinyougou.service.impl.BaseServiceImpl;
 import com.pinyougou.vo.Cart;
-import com.pinyougou.vo.Order;
 import com.pinyougou.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,9 +16,6 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.Year;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +25,9 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private ItemMapper itemMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -168,6 +167,59 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
         example.createCriteria().andIn("orderId", Arrays.asList(orderIds));
 
         orderMapper.updateByExampleSelective(order, example);
+    }
+
+    @Override
+    public List findOrderListByUsername(String username) {
+        Example example = new Example(TbOrder.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId",username);
+
+        List<TbOrder> orderList = orderMapper.selectByExample(example);
+        return orderList;
+
+
+
+    }
+
+    @Override
+    public List<TbOrderItem> findOrderItemListByOrderId(Long orderId) {
+        Example example = new Example(TbOrderItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("orderId",orderId);
+
+        List<TbOrderItem> orderItemList = orderItemMapper.selectByExample(example);
+        return orderItemList;
+
+    }
+
+    @Override
+    public TbPayLog findOutTradeNo(String orderId) {
+        Example example = new Example(TbPayLog.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("orderList",orderId);
+        List<TbPayLog> tbPayLogList = payLogMapper.selectByExample(example);
+
+        return tbPayLogList.get(0);
+    }
+
+    @Override
+    public TbOrderItem findOrderItemById(String orderItemId) {
+        long id = Long.parseLong(orderItemId);
+        System.out.println(orderItemId);
+        TbOrderItem orderItem = new TbOrderItem();
+        orderItem.setId(id);
+        return orderItemMapper.select(orderItem).get(0);
+    }
+
+    @Override
+    public TbOrder findOrderById(String orderId) {
+        long id = Long.parseLong(orderId);
+        TbOrder tbOrder = new TbOrder();
+        tbOrder.setOrderId(id);
+        List<TbOrder> tbOrderList = orderMapper.select(tbOrder);
+
+        return tbOrderList.get(0);
     }
 
     /**

@@ -77,4 +77,22 @@ app.controller("sellerController", function ($scope, $controller, sellerService)
         });
     };
 
+    //修改密码
+    $scope.updatePassword = function () {
+        //校验两次密码是否一致
+        if($scope.newPwd != $scope.newPwd1){
+            alert("两次输入的密码不同！");
+        }else {
+            $scope.password = {oldPwd:$scope.oldPwd,newPwd:$scope.newPwd};
+            sellerService.updatePassword($scope.password).success(function (response) {
+                if(response.success) {
+                    alert(response.message);
+                    location.href = "http://shop.pinyougou.com/shoplogin.html";
+                }else {
+                    alert(response.message);
+                }
+            });
+        }
+    }
+
 });

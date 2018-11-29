@@ -4,6 +4,9 @@ import com.pinyougou.pojo.TbUser;
 import com.pinyougou.service.BaseService;
 import com.pinyougou.vo.PageResult;
 
+import java.text.ParseException;
+import java.util.Map;
+
 public interface UserService extends BaseService<TbUser> {
 
     PageResult search(Integer page, Integer rows, TbUser user);
@@ -21,4 +24,10 @@ public interface UserService extends BaseService<TbUser> {
      * @return true or false
      */
     boolean checkSmsCode(String phone, String smsCode);
+
+    Map<String,Object> getUserInformation(String username);
+
+    void updateUserInformation(String information, String username) throws ParseException;
+
+    void updateByExample(TbUser tbUser);
 }

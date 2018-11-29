@@ -17,6 +17,8 @@ http://www.springframework.org/schema/security/spring-security.xsd">
     <http pattern="/register.html" security="none"/>
     <http pattern="/user/add.do" security="none"/>
     <http pattern="/user/sendSmsCode.do" security="none"/>
+    <!--增加不登陆可访问界面：用户中心-->
+    <!--<http pattern="/home-setting-info.html" security="none"/>-->
 
     <!-- entry-point-ref 入口点引用  -->
     <http use-expressions="false" entry-point-ref="casProcessingFilterEntryPoint">
