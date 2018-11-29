@@ -28,14 +28,13 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-<<<<<<< HEAD
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-common</artifactId>
             <version>1.0-SNAPSHOT</version>
-=======
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
->>>>>>> aa2a28a9403f445cbd25424e6060e16590822127
         </dependency>
     </dependencies>
 </project>
