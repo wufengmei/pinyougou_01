@@ -74,5 +74,17 @@ public class OrderController {
 
         return Result.fail("更新状态失败");
     }
+    @GetMapping("/updateOrderStatus")
+    public Result updateOrderStatus(Long[] ids, String status){
+        try {
+            orderService.updateStatus(ids, status);
+
+            return Result.ok("更新状态成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.fail("更新状态失败");
+    }
 
 }

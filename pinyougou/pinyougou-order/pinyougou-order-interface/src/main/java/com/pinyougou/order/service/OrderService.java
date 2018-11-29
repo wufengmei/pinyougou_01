@@ -44,4 +44,7 @@ public interface OrderService extends BaseService<TbOrder> {
 
     TbOrder findOrderById(String orderId);
 
+    void updateCloseatus(Long[] ids, String status);
+
+    void updateStatus(Long[] ids, String status);
 }
