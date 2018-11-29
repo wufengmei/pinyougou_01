@@ -42,7 +42,7 @@ public class UserServiceImpl extends BaseServiceImpl<TbUser> implements UserServ
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    private ActiveMQQueue itemSmsQueue;
+    private ActiveMQQueue itcastSmsQueue;
 
     @Value("${signName}")
     private String signName;
@@ -68,26 +68,36 @@ public class UserServiceImpl extends BaseServiceImpl<TbUser> implements UserServ
 
     @Override
     public void sendSmsCode(String phone) {
-        //1、生成6位随机数作为验证码
-        String code = (long)(Math.random() * 1000000) + "";
-        System.out.println("验证码：" + code);
-
-        //2、将验证码存入redis；设置过期时间5分钟----》手机号为key，验证码为value
+//        生成6位随机数
+        String tempCode = "";
+        while (true) {
+            double random = Math.random();
+            String stringRandom = random + "";
+            tempCode = stringRandom.substring(2, 8);
+            if (!tempCode.substring(0, 1).equals("0")) {
+                break;
+            }else {
+                tempCode = "";
+            }
+        }
+        String code = tempCode;
         redisTemplate.boundValueOps(phone).set(code);
         redisTemplate.boundValueOps(phone).expire(5, TimeUnit.MINUTES);
-
-        //3、发送MQ消息-->jmsTemplate(itcast_sms_queue)
-        jmsTemplate.send(itemSmsQueue, new MessageCreator() {
+        //发送通知
+        jmsTemplate.send(itcastSmsQueue, new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 MapMessage mapMessage = session.createMapMessage();
                 mapMessage.setString("mobile", phone);
                 mapMessage.setString("signName", signName);
                 mapMessage.setString("templateCode", templateCode);
-                mapMessage.setString("templateParam", "{\"code\":" + code + "}");
+                mapMessage.setString("templateParam","{\"code\":\""+code+"\"}");
+
+                System.out.println(mapMessage.getString("templateParam"));
                 return mapMessage;
             }
         });
+
     }
 
     @Override
@@ -122,6 +132,7 @@ public class UserServiceImpl extends BaseServiceImpl<TbUser> implements UserServ
 
             resultMap.put("nickName",tbUser.getNickName());
             resultMap.put("sex",tbUser.getSex());
+            resultMap.put("phone", tbUser.getPhone());
             //切割日期
             String tempDate = simpleDateFormat.format(tbUser.getBirthday());
             String[] sourceStrArray = tempDate.split("-");
@@ -160,7 +171,18 @@ public class UserServiceImpl extends BaseServiceImpl<TbUser> implements UserServ
 
     @Override
     public void updateByExample(TbUser tbUser) {
+
+        String username = tbUser.getUsername();
+        Example example = new Example(TbUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("username", username);
+        List<TbUser> tbUsers = userMapper.selectByExample(example);
+        Long id = tbUsers.get(0).getId();
+
+        tbUser.setId(id);
+
         userMapper.updateByPrimaryKeySelective(tbUser);
+
     }
 
 }

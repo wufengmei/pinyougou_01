@@ -17,6 +17,9 @@
 	<script src="js/controller/addressController.js"></script>
 	<script src="js/controller/indexController.js"></script>
 	<script src="js/controller/safeController.js"></script>
+
+
+
 </head>
 
 <body ng-app="pinyougou" ng-controller="safeController" ng-init="getUsername();getUserInformation()">
@@ -379,28 +382,21 @@
 
 								<div class="control-group">
 									<label  class="control-label">验证方式：</label>
-									<div class="controls fixed">手机验证（138****9856）</div>
+									<div class="controls fixed">手机验证{{userInformation.phone}}</div>
 								</div>
-								<div class="control-group">
-									<label for="inputcode" class="control-label">验证码：</label>
-									<div class="controls">
-										<input name="inputcode" type="text" id="inputcode">
-									</div>
-									<div class="controls">
-										验证码
-									</div>
-								</div>
+
 								<div class="control-group">
 									<label  class="control-label">短信验证码：</label>
 									<div class="controls">
-										<input name="msgcode" type="text" id="msgcode">
+										<input name="msgcode" type="text" id="msgcode" ng-model="smsCode">
 									</div>
 									<div class="controls">
-										<button class="sui-btn btn-info">发送</button>
+										<button class="sui-btn btn-info" ng-click="sendSmsCodeNormal(userInformation.phone)">发送</button>
 									</div>
 								</div>
 								<div class="control-group next-btn">
-									<a class="sui-btn btn-primary" href="home-setting-address-phone.html">下一步</a>
+									<a class="sui-btn btn-primary" ng-click="checkSmsCode(smsCode,userInformation.phone)">下一步</a>
+									<!--href="home-setting-address-phone.html"-->
 								</div>
 							</form>
 						</div>

@@ -52,7 +52,7 @@ public class UserController {
         try {
             if (PhoneFormatCheckUtils.isPhoneLegal(phone)) {
                 userService.sendSmsCode(phone);
-                return Result.ok("发送短信验证码成");
+                return Result.ok("发送短信验证码成功");
             } else {
                 return Result.fail("手机号码格式错误；发送短信验证码失败");
             }
@@ -62,6 +62,38 @@ public class UserController {
         return Result.fail("发送短信验证码失败!");
     }
 
+    @GetMapping("/checkSmsCode")
+    public Result checkSmsCode(String smsCode,String phone) {
+
+        if(userService.checkSmsCode(phone, smsCode)){
+            /*String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            TbUser tbUser = new TbUser();
+            tbUser.setUsername(username);
+            tbUser.setPhone(phoneNum);
+            userService.updateByExample(tbUser);*/
+            return Result.ok("短信验证成功");
+        }else{
+            return Result.fail("短信验证码错误");
+        }
+
+    }
+
+    @GetMapping("/savePhone")
+    public Result savePhone(String phone) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        TbUser tbUser = new TbUser();
+        try {
+            tbUser.setUsername(username);
+            tbUser.setPhone(phone);
+            userService.updateByExample(tbUser);
+
+            return Result.ok("电话号码修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail("电话号码修改失败");
+        }
+
+    }
     @RequestMapping("/findAll")
     public List<TbUser> findAll() {
         return userService.findAll();
@@ -173,9 +205,18 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         JSONObject jsonObject = JSON.parseObject(password);
-        String oldPasswordMD5 = DigestUtils.md5Hex((String) jsonObject.get("oldPassword"));
-        String newPasswordMD5 = DigestUtils.md5Hex((String) jsonObject.get("newPassword"));
-        String newPasswordRepeatMD5 = DigestUtils.md5Hex((String) jsonObject.get("newPasswordRepeat"));
+
+        String oldPasswordMD5 = null;
+        String newPasswordMD5 = null;
+        String newPasswordRepeatMD5 = null;
+        try {
+            oldPasswordMD5 = DigestUtils.md5Hex((String) jsonObject.get("oldPassword"));
+            newPasswordMD5 = DigestUtils.md5Hex((String) jsonObject.get("newPassword"));
+            newPasswordRepeatMD5 = DigestUtils.md5Hex((String) jsonObject.get("newPasswordRepeat"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail("密码字段不能为空");
+        }
 
         TbUser tempTbUser = new TbUser();
         tempTbUser.setUsername(username);

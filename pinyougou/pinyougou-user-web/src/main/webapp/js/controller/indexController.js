@@ -1,5 +1,6 @@
-app.controller("indexController", function ($scope,$location, userService,payService) {
+app.controller("indexController", function ($scope,$location,userService,payService) {
     $scope.userInformation = {};
+
     $scope.getUsername = function () {
         userService.getUsername().success(function (response) {
             $scope.username = response.username;
@@ -36,7 +37,7 @@ app.controller("indexController", function ($scope,$location, userService,paySer
     $scope.findOutTradeNo = function(){
         userService.findOutTradeNo($scope.orderId).success(function (response) {
             $scope.weixin = response;
-            $scope.outTradeNo = response.outTradeNo
+            $scope.outTradeNo = response.outTradeNo;
 
 
                     if("SUCCESS"==response.result_code){
@@ -48,7 +49,7 @@ app.controller("indexController", function ($scope,$location, userService,paySer
                             element:document.getElementById("qrious"),
                             size:250,
                             level:"M",
-                            value:response.code_url,
+                            value:response.code_url
                         });
 
                         //查询支付状态
@@ -61,7 +62,7 @@ app.controller("indexController", function ($scope,$location, userService,paySer
 
 
         })
-    }
+    };
 
     queryPayStatus = function (outTradeNo) {
         payService.queryPayStatus(outTradeNo).success(function (response) {
