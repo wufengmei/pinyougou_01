@@ -1,7 +1,11 @@
 package com.pinyougou.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @Description: TODO
@@ -11,6 +15,9 @@ public class OrderAndGood implements Serializable {
 
     // 当前登陆的商家
     private String username;
+
+    private Long orderId;
+    private String id;
 
     // 商家id
     private String sellerId;
@@ -28,11 +35,17 @@ public class OrderAndGood implements Serializable {
 
     private Long category3Id;
 
+    // 单价
+    private BigDecimal price;
+
+    // 购买数量
+    private Integer num;
+
     // 实付金额
-    private BigDecimal payment;
+    private BigDecimal totalFee;
 
     // 更新时间
-    private String updateTime;
+    private Date updateTime;
 
     // 状态
     private String status;
@@ -88,20 +101,35 @@ public class OrderAndGood implements Serializable {
         this.category3Id = category3Id;
     }
 
-    public BigDecimal getPayment() {
-        return payment;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setPayment(BigDecimal payment) {
-        this.payment = payment;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
+    public Integer getNum() {
+        return num;
+    }
 
-    public String getUpdateTime() {
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public BigDecimal getTotalFee() {
+        return totalFee;
+    }
+
+    public void setTotalFee(BigDecimal totalFee) {
+        this.totalFee = totalFee;
+    }
+
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -126,5 +154,21 @@ public class OrderAndGood implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -28,7 +28,7 @@
 
 </head>
 
-<body ng-app="pinyougou" ng-controller="allSeckillOrderListController" ng-init="findItemCatList();selectItemCat1List();" class="hold-transition skin-red sidebar-mini">
+<body ng-app="pinyougou" ng-controller="allSeckillOrderListController" ng-init="" class="hold-transition skin-red sidebar-mini">
 <!-- .box-body -->
 <div class="box box-primary">
     <div class="box-header with-border">
@@ -39,32 +39,18 @@
 
         <!-- 数据表格 -->
         <div class="table-box">
+            <button type="button" class="btn btn-default" ng-click="updateStatus('4')"><i class="fa fa-trash-o"></i>关闭交易</button>
+            <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
 
             <!--工具栏-->
 
             <div class="box-tools pull-right">
                 <div class="has-feedback">
                     商家<input ng-model="searchEntity.sellerId" >
-                    <div>
-                        <table>
-                            <tr>
-                                <td>商品分类：</td>
-                                <td>
-                                    <select class="form-control" ng-model="searchEntity.category1Id"
-                                            ng-options="item.id as item.name for item in itemCat1List" >
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control select-sm" ng-model="searchEntity.category2Id"
-                                            ng-options="item.id as item.name for item in itemCat2List"></select>
-                                </td>
-                                <td>
-                                    <select class="form-control select-sm" ng-model="searchEntity.category3Id"
-                                            ng-options="item.id as item.name for item in itemCat3List"></select>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    订单编号<input ng-model="searchEntity.id" >
+                    商品名称<input ng-model="searchEntity.title">
+                    订单状态<select ng-model="searchEntity.status" ng-options="x for (x, y) in status">
+                </select>
                         <div data-toggle="distpicker">
                             <table>
                                 <tr>
@@ -73,17 +59,17 @@
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="province1" ng-model="searchEntity.receiverAddress"></select>
+                                            <select class="form-control" id="province1" ng-model="searchAdress.province1"></select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="city1" ng-model="searchEntity.receiverAddress"></select>
+                                            <select class="form-control" id="city1" ng-model="searchAdress.city1"></select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group area">
-                                            <select class="form-control" id="district1" ng-model="searchEntity.receiverAddress"></select>
+                                            <select class="form-control" id="district1" ng-model="searchAdress.district1"></select>
                                         </div>
                                     </td>
                                 </tr>
@@ -91,7 +77,7 @@
 
                         </div>
 
-                    <button class="btn btn-default" ng-click="reloadList()" >查询</button>
+                    <button class="btn btn-default" ng-click="reloadList();searchEntity.receiverAddress=searchAdress.province1+searchAdress.city1+searchAdress.district1" >查询</button>
                 </div>
                 </div>
             <!--工具栏/-->
@@ -100,31 +86,37 @@
             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                 <thead>
                 <tr>
+                    <th class="" style="padding-right:0px">
+                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                    </th>
                     <th class="sorting_asc">商家</th>
+                    <th class="sorting_asc">订单编号</th>
                     <th class="sorting">商品名称</th>
-                    <th class="sorting">一级分类</th>
-                    <th class="sorting">二级分类</th>
-                    <th class="sorting">三级分类</th>
-                    <th class="sorting">支付时间</th>
                     <th class="sorting">原价</th>
                     <th class="sorting">秒杀价</th>
+                    <th class="sorting">支付时间</th>
                     <th class="sorting">实付金额</th>
+                    <th class="sorting">秒杀数量</th>
+                    <th class="sorting">已销售数量</th>
                     <th class="sorting">收货地址</th>
+                    <th class="sorting">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="entity in list">
+                    <td><input ng-click="updateSelection($event, entity.orderId)" type="checkbox"></td>
                     <td>{{entity.sellerId}}</td>
-                    <td>{{entity.goodsName}}</td>
-                    <td>{{itemCatList[entity.category1Id]}}</td>
-                    <td>{{itemCatList[entity.category2Id]}}</td>
-                    <td>{{itemCatList[entity.category3Id]}}</td>
-                    <td>{{entity.payTime}}</td>
+                    <td>{{entity.orderId}}</td>
+                    <td>{{entity.title}}</td>
                     <td>{{entity.price}}</td>
                     <td>{{entity.costPrice}}</td>
+                    <td>{{year(entity.payTime)}}</td>
                     <td>{{entity.money}}</td>
+                    <td>{{entity.num}}</td>
+                    <td>{{entity.num-entity.stockCount}}</td>
                     <td>{{entity.receiverAddress}}</td>
+                    <td>{{orderStatus[entity.status]}}</td>
                     <td class="text-center">
                         <button type="button" ng-click="findOne(entity.sellerId)" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#sellerModal" >详情</button>
                     </td>

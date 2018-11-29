@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinyougou.mapper.MySeckillOrderMapper">
+    <select id="findMySeckillOrder" parameterType="MySeckillOrder" resultType="MySeckillOrder">
+        select * from `tb_seckill_order` o,`tb_seckill_goods` g
+        <where>
+            o.`seckill_id` = g.`id`
+            <if test="userId!=null and userId !=''">
+                AND o.`user_id` = #{userId}
+            </if>
+        </where>
+        order by o.`status`
+
+    </select>
+
+</mapper>

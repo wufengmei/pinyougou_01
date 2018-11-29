@@ -12,6 +12,12 @@
             <if test="status!=null and status !=''">
                 AND status = #{status}
             </if>
+            <if test="orderId!=null and orderId !=''">
+                AND o.`order_id` =  #{orderId}
+            </if>
+            <if test="goodsName!=null and goodsName !=''">
+                AND g.`goods_name` like "%${goodsName}%"
+            </if>
             <if test="sellerId!=null and sellerId !=''">
                 AND o.seller_id like "%${sellerId}%"
             </if>

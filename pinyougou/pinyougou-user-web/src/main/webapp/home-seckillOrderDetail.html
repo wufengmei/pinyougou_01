@@ -5,26 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <title>用户中心</title>
+    <title>订单详情</title>
      <link rel="icon" href="assets/img/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
-    <script src="plugins/angularjs/angular.min.js"></script>
-    <script src="js/base.js"></script>
-
-
-
-    <script src="js/service/userService.js"></script>
-
-    <script src="js/controller/indexController.js"></script>
-	<script src="js/service/payService.js"></script>
-	<script src="js/controller/payController.js"></script>
-
+	<script src="plugins/angularjs/angular.min.js"></script>
+	<script src="js/base.js"></script>
+	<script src="js/service/userService.js"></script>
+	<script src="js/controller/indexController.js"></script>
+	<script src="js/service/seckillOrderDetailService.js"></script>
+	<script src="js/controller/seckillOrderDetailController.js"></script>
 
 </head>
 
-<body ng-app="pinyougou" ng-controller="indexController" ng-init="getUsername();findOrderList()">
+<body ng-app="pinyougou" ng-controller="seckillOrderDetailController" ng-init="getUsername();findOne()">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -34,8 +29,8 @@
 			<div class="py-container">
 				<div class="shortcut">
 					<ul class="fl">
-                        <li class="f-item">品优购欢迎您！</li>
-                        <li class="f-item">{{username}}　<span><a href="/logout/cas">退出登录</a></span></li>
+						<li class="f-item">品优购欢迎您！</li>
+						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>
@@ -69,7 +64,7 @@
 			<div class="py-container">
 				<div class="yui3-g Logo">
 					<div class="yui3-u Left logoArea">
-						<a class="logo-bd" title="品优购" href="http://www.pinyougou.com" target="_blank"></a>
+						<a class="logo-bd" title="品优购" href="JD-index.html" target="_blank"></a>
 					</div>
 					<div class="yui3-u Center searchArea">
 						<div class="search">
@@ -98,7 +93,7 @@
 						<div class="fr shopcar">
 							<div class="show-shopcar" id="shopcar">
 								<span class="car"></span>
-								<a class="sui-btn btn-default btn-xlarge" href="http://cart.pinyougou.com" target="_blank">
+								<a class="sui-btn btn-default btn-xlarge" href="cart.html" target="_blank">
 									<span>我的购物车</span>
 									<i class="shopnum">0</i>
 								</a>
@@ -165,16 +160,15 @@ $(function(){
                     <div class="person-info">
                         <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
                         <div class="person-account">
-                            <span class="name">{{username}}</span>
+                            <span class="name">Michelle</span>
                             <span class="safe">账户安全</span>
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="list-items">
+                     <div class="list-items">
                         <dl>
 							<dt><i>·</i> 订单中心</dt>
 							<dd ><a href="home-index.html"  class="list-active" >我的订单</a></dd>
-                            <dd><a href="home-seckillOrder.html" >秒杀订单</a></dd>
 							<dd><a href="home-order-pay.html" >待付款</a></dd>
 							<dd><a href="home-order-send.html"  >待发货</a></dd>
 							<dd><a href="home-order-receive.html" >待收货</a></dd>
@@ -197,156 +191,125 @@ $(function(){
                     </div>
                 </div>
                 <!--右侧主内容-->
-                <div class="yui3-u-5-6 order-pay">
+                <div class="yui3-u-5-6">
                     <div class="body">
-                        <div class="table-title">
-                            <table class="sui-table  order-table">
-                                <tr>
-                                    <thead>
-                                        <th width="10%">宝贝</th>
-                                        <th width="5%">单价</th>
-                                        <th width="5%">数量</th>
-                                        <th width="8%">商品操作</th>
-                                        <th width="10%">实付款</th>
-                                        <th width="10%">交易状态</th>
-                                        <th width="10%">交易操作</th>
-                                    </thead>
-                                </tr>
-                            </table>
-                        </div>
                         <div class="order-detail">
-                            <div class="orders">
-                                <div class="choose-order">
-                                    <div class="sui-pagination pagination-large top-pages">
-                                        <ul>
-                                            <li class="prev disabled"><a href="#">上一页</a></li>
-
-                                            <li class="next"><a href="#">下一页</a></li>
-                                        </ul>
+                            <h4>订单详情</h4>
+                            <div class="order-bar">
+                                <div class="sui-steps-round steps-round-auto steps-4">
+                                    <div class="finished">
+                                        <div class="wrap">
+                                        <div class="round">1</div>
+                                        <div class="bar"></div>
+                                        </div>
+                                        <label>
+                                            <span>提交订单</span>
+                                            <span>{{year(resultMap.id.createTime)}}</span>
+                                            <span>{{day(resultMap.id.createTime)}}</span>
+                                        </label>
                                     </div>
-                                </div>
-
-
-								<table class="sui-table table-bordered order-datatable" ng-repeat="order in orderList" >
-									<!--order1-->
-
-										<a class="sui-btn btn-info share-btn">分享</a>
-
-                                    <tbody>
-
-                                        <tr ng-repeat="orderItem in order.orderItemList">
-
-                                            <td width="3%">
-                                                <div class="typographic" >
-													<a href="#" class="block-text">商家：{{order.sellerId}}</a>
-													<img src= "{{orderItem.picPath}}" />
-                                                    <a href="#" class="block-text">{{orderItem.title}}</a>
-                                                    <span class="guige">订单编号：{{order.orderId}} </span>
+                                    <div class="{{returnS(resultMap.id.payTime)}}">
+                                        <div class="wrap">
+                                        <div class="round">2</div>
+                                        <div class="bar"></div>
+                                        </div>
+                                        <label>
+                                            <span>付款成功</span>
+                                            <span>{{year(resultMap.id.payTime)}}</span>
+                                            <span>{{day(resultMap.id.payTime)}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="{{returnS(resultMap.id.consignTime)}}">
+                                        <div class="wrap">
+                                        <div class="round">3</div>
+                                        <div class="bar"></div>
+                                        </div>
+                                        <label>
+                                            <span>已发货</span>
+                                            <span >{{year(resultMap.id.consignTime)}}</span>
+                                            <span>{{day(resultMap.id.consignTime)}}</span>
+                                        </label>
+                                    </div>
+                                    <div class="{{returnS(resultMap.id.endTime)}}">
+                                        <div class="wrap">
+                                        <div class="round">4</div>
+                                        <div class="bar"></div>
+                                        </div>
+                                        <label>
+                                            <span>确认收货</span>
+                                            <span>{{year(resultMap.id.endTime)}}</span>
+                                            <span >{{day(resultMap.id.endTime)}}</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="{{returnS(resultMap.id.pingjiaTime)}}">
+                                        <div class="wrap">
+                                        <div class="round">5</div>
+                                        </div>
+                                        <label>
+                                            <span>评价晒单</span>
+                                            <span>{{year(resultMap.id.pingjiaTime)}}</span>
+                                            <span >{{day(resultMap.id.pingjiaTime)}}</span>
+                                        </label>
+                                    </div>
+                                    </div>
+                            </div>
+                            <div class="order-state">
+                                <p>当前订单状态：<span class="red">{{orderStatus[resultMap.id.status]}}</span></p>
+                                <p>还剩{{timestring}} 自动确认收货</p>
+                            </div>
+                        </div>
+                        <div class="order-info">
+                            <h5>订单信息</h5>
+                            <p>收货地址：{{resultMap.id.receiverAddress}}  </p>
+                            <p>订单单号：{{resultMap.id.id}}</p>
+                            <p>下单时间：{{setTime(resultMap.id.createTime)}}</p>
+                            <p>支付时间：{{setTime(resultMap.id.payTime)}}</p>
+                            <p>支付方式：微信</p>
+                            <p>发货时间：201707-06-06 09：03：03</p>
+                        </div>
+                        <div class="order-goods">
+                            <table class="sui-table">
+                                    <thead>
+                                        <th class="center" >商品</th>
+                                        <th class="center" >价格</th>
+                                        <th class="center" >数量</th>
+                                        <th class="center" >优惠</th>
+                                        <th class="center" >状态</th>
+                                    </thead>                                   
+                             
+                                <tbody>                               
+                                    <tr>
+                                        <td colspan="5">订单编号：{{resultMap.id.id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="typographic"><img width="15%" src="{{resultMap.seckillId.smallPic}}" />
+                                                    <span>{{resultMap.seckillId.title}}</span>
+                                                   <!-- <span class="guige">规格：温泉喷雾150ml</span>-->
                                                 </div>
-                                            </td>
-                                            <td width="5%" class="center">
-                                                <ul class="unstyled">
-                                                    <li class="o-price">{{orderItem.price}}</li>
-                                                    <li>¥{{orderItem.price}}</li>
+                                        </td>
+                                        <td>
+                                            <ul class="unstyled">
+                                                    <li class="o-price">¥{{resultMap.seckillId.price}}</li>
+                                                    <li>¥{{resultMap.seckillId.costPrice}}</li>
                                                 </ul>
-                                            </td>
-                                            <td width="5%" class="center">1</td>
-                                            <td width="8%" class="center">
-                                               
-                                            </td>
-                                            <td width="10%" class="center" >
-                                                <ul class="unstyled">
-                                                    <li>¥{{orderItem.price}}</li>
-                                                    <li>（含运费：￥0.00）</li>
-                                                </ul>
-                                            </td>
-                                            <td width="10%" class="center">
-                                                <ul class="unstyled">
-                                                    <li>
-														<p ng-if="order.status==1">未付款</p>
-														<p ng-if="order.status==2">已付款</p>
-														<p ng-if="order.status==3">未发货</p>
-														<p ng-if="order.status==4">已发货</p>
-														<p ng-if="order.status==5">交易成功</p>
-														<p ng-if="order.status==6">交易关闭</p>
-														<p ng-if="order.status==7">已评价</p>
-
-													</li>
-                                                    <li><a href="home-orderDetail.html#?orderId={{order.orderId}}" class="btn">订单详情 </a></li>
-                                                </ul>
-                                            </td>
-                                            <td width="10%" class="center">
-                                                <ul class="unstyled">
-													<li>
-														<p ng-if="order.status==1">
-															<a class="sui-btn btn-info" href="pay.html#?orderId={{order.orderId}}">立即付款</a><br>
-															<a href="cancel.html#?orderId={{order.orderId}}">取消订单</a>
-														</p>
-
-
-
-														<p ng-if="order.status==2">
-															<a class="sui-btn btn-info" href="tuikuan.html#?orderId={{order.orderId}}">退款</a>
-														</p>
-
-														<p ng-if="order.status==3">
-															<a class="sui-btn btn-info" >提醒发货</a>
-														</p>
-
-														<p ng-if="order.status==4">
-															<a class="sui-btn btn-info" >查看物流</a>
-														</p>
-
-														<p ng-if="order.status==5">
-															<a class="sui-btn btn-info" >待评价</a>
-														</p>
-
-														<p ng-if="order.status==6">
-															<a class="sui-btn btn-info" >重新下单</a>
-														</p>
-														<p ng-if="order.status==7">
-															<a class="sui-btn btn-info" >晒一晒</a>
-														</p>
-													</li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        
-
-                                    </tbody>
-                                </table>
-
-
+                                        </td>
+                                        <td>1</td>
+                                        <td>无优惠</td>
+                                        <td>{{orderStatus[resultMap.id.status]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="order-price">
+                                <p>商品总金额：￥{{resultMap.id.money}}</p>
+                                <p>运费金额：，免费用</p>
+                                <p>使用优惠券：无</p>
+                                <h4 class="red">实际支付：￥{{resultMap.id.money}}</h4>
                             </div>
-                            <div class="choose-order">
-                                <div class="fr page">
-                                    <div class="sui-pagination pagination-large">
-                                        <ul>
-                                            <li class="prev {{(searchMap.pageNo > 1)?'':'disabled'}}">
-                                                <a href="#"  ng-click="upPage()">«上一页</a>
-                                            </li>
-                                            <li ng-if="frontDot" class="dotted"><span>...</span></li>
-
-                                            <li ng-repeat="pn in pageNoList" class="{{isCurrentPage(pn)?'active':''}}">
-                                                <a href="#" ng-click="queryByPageNo(pn)">{{pn}}</a>
-                                            </li>
-
-                                            <li ng-if="backDot" class="dotted"><span>...</span></li>
-                                            <li class="next  {{(searchMap.pageNo < resultMap.totalPages)?'':'disabled'}}">
-                                                <a href="#" ng-click="nextPage()">下一页»</a>
-                                            </li>
-                                        </ul>
-                                        <div><span>共{{resultMap.totalPages}}页&nbsp;</span><span>
-      到第
-      <input type="text" ng-model="searchMap.pageNo" class="page-num">
-      页 <button class="page-confirm" ng-click="queryByPageNo(searchMap.pageNo)">确定</button></span></div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="clearfix"></div>
                         </div>
-
+                        <!--猜你喜欢-->
                         <div class="like-title">
                             <div class="mt">
                                 <span class="fl"><strong>热卖单品</strong></span>
@@ -571,5 +534,7 @@ $(function(){
 	</div>
 </div>
 <!--页面底部END-->
+
+undefined
 
 </html>

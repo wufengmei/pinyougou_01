@@ -6,7 +6,10 @@ import com.github.pagehelper.PageInfo;
 import com.pinyougou.common.util.IdWorker;
 import com.pinyougou.common.util.RedisLock;
 import com.pinyougou.mapper.SeckillGoodsMapper;
+import com.pinyougou.mapper.SeckillOrderAndGoodMapper;
 import com.pinyougou.mapper.SeckillOrderMapper;
+import com.pinyougou.pojo.SeckillOrderAndGood;
+import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbSeckillGoods;
 import com.pinyougou.pojo.TbSeckillOrder;
 import com.pinyougou.seckill.service.SeckillOrderService;
@@ -14,11 +17,9 @@ import com.pinyougou.service.impl.BaseServiceImpl;
 import com.pinyougou.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service(interfaceClass = SeckillOrderService.class)
 public class SeckillOrderServiceImpl extends BaseServiceImpl<TbSeckillOrder> implements SeckillOrderService {
@@ -36,6 +37,9 @@ public class SeckillOrderServiceImpl extends BaseServiceImpl<TbSeckillOrder> imp
 
     @Autowired
     private IdWorker idWorker;
+
+    @Autowired
+    private SeckillOrderAndGoodMapper seckillOrderAndGoodMapper;
 
     @Override
     public PageResult search(Integer page, Integer rows, TbSeckillOrder seckillOrder) {
@@ -92,11 +96,13 @@ public class SeckillOrderServiceImpl extends BaseServiceImpl<TbSeckillOrder> imp
             seckillOrder.setSellerId(seckillGoods.getSellerId());
             seckillOrder.setUserId(userId);
             seckillOrder.setCreateTime(new Date());
+            System.out.println(seckillOrder.getSeckillId());
 
             //保存到redis
             redisTemplate.boundHashOps(SECKILL_ORDERS).put(seckillOrder.getId().toString(), seckillOrder);
 
             //4、返回秒杀订单号
+            System.out.println("订单编号---"+seckillOrder.getId());
             return seckillOrder.getId().toString();
         }
         return null;
@@ -146,5 +152,184 @@ public class SeckillOrderServiceImpl extends BaseServiceImpl<TbSeckillOrder> imp
             //3、删除redis中的订单
             redisTemplate.boundHashOps(SECKILL_ORDERS).delete(outTradeNo);
         }
+    }
+
+    /**
+     * 查询秒杀订单
+     * @param username
+     * @return
+     */
+    @Override
+    public Map<String, Object> findMySeckillOrder(String username) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 登陆用户的秒杀的订单数组
+        List<TbSeckillOrder> seckillOrderList = new ArrayList<>();
+
+        // 根据用户名获取Mysql数据库的相应的秒杀订单列表
+        TbSeckillOrder seckillOrder = new TbSeckillOrder();
+        seckillOrder.setUserId(username);
+        // 判断该用户在MySQL数据库是否为空
+        if (seckillOrderMapper.select(seckillOrder) != null && seckillOrderMapper.select(seckillOrder).size()>0){
+             seckillOrderList = seckillOrderMapper.select(seckillOrder);
+        }
+
+        // 获取redis的所有的秒杀订单
+        List<TbSeckillOrder> values = redisTemplate.boundHashOps(SECKILL_ORDERS).values();
+        Map<String, Object> mySeckillOrderFromMyRedis = new HashMap<>();
+        // 根据用户名获取redis的相应的秒杀订单列表
+        if (values != null && values.size()>0){
+            for (TbSeckillOrder tbSeckillOrder : values) {
+                if (username.equals(tbSeckillOrder.getUserId())){
+                    seckillOrderList.add(tbSeckillOrder);
+                }
+            }
+        }
+
+        if (seckillOrderList != null && seckillOrderList.size()>0){
+            // 获取所有的订单详情信息
+            resultMap = findMySeckillOrder(seckillOrderList);
+        }
+
+        // 返回结果
+        return  resultMap;
+    }
+
+    public Map<String,Object> findMySeckillOrder(List<TbSeckillOrder> seckillOrderList){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 订单集合，每个订单是一个map(一个是订单，一个是该订单对应的秒杀商品)
+        List<Map<String,Object>> list = new ArrayList<>();
+        // 遍历每一个秒杀订单
+        for (TbSeckillOrder seckillOrder : seckillOrderList) {
+            Map<String,Object> map = new HashMap<>();
+            // 设置订单编号
+            map.put("id",seckillOrder);
+            // 根据秒杀订单id,获取秒杀商品
+            TbSeckillGoods seckillGoods = seckillGoodsMapper.selectByPrimaryKey(seckillOrder.getSeckillId());
+            map.put("seckillId",seckillGoods);
+            map.put("outTradeNo",seckillOrder.getId().toString());
+            list.add(map);
+        }
+        resultMap.put("rows",list);
+        // 页大小为3，计算总页数
+        resultMap.put("totalPages",Math.ceil(list.size()/3.0));
+
+        // 返回秒杀商品的订单详情列表和总页数
+        return resultMap;
+    }
+
+    /**
+     * 获取某个订单的详情信息
+     * @return
+     * @param id 订单编号
+     */
+    @Override
+    public Map<String, Object> findMyOneSeckillOrder(Long id,String username) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 先查询数据库
+        TbSeckillOrder seckillOrder = seckillOrderMapper.selectByPrimaryKey(id);
+            if (seckillOrder != null){
+                // 校验用户名
+                if (isUser(username,resultMap,seckillOrder)){
+                    return resultMap;
+                }else {
+                    throw new RuntimeException("非法访问");
+                }
+
+            }else {
+                // 去redis查找
+                TbSeckillOrder seckillOrder1 = findSeckillOrderInRedisByOrderId(id+"");
+                if (seckillOrder1 != null){
+                    // 校验用户名
+                    if (isUser(username,resultMap,seckillOrder1)){
+                        return resultMap;
+                    }else {
+                        throw new RuntimeException("非法访问");
+                    }
+                }
+            }
+        return null;
+    }
+
+    // 校验用户名
+    public boolean isUser(String username,Map<String, Object> resultMap,TbSeckillOrder seckillOrder){
+        if (username.equals(seckillOrder.getUserId())){
+            // 根据秒杀商品id获取秒杀商品
+            TbSeckillGoods seckillGoods = seckillGoodsMapper.selectByPrimaryKey(seckillOrder.getSeckillId());
+            resultMap.put("id",seckillOrder);
+            resultMap.put("seckillId",seckillGoods);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood) {
+        // 分页
+        PageHelper.startPage(page,rows);
+        List<SeckillOrderAndGood> list = seckillOrderAndGoodMapper.findSeckillOrderAndGood(seckillOrderAndGood);
+        if (list != null && list.size()>0){
+            for (SeckillOrderAndGood seckillOrderAndGood1 : list) {
+                seckillOrderAndGood1.setOrderId(seckillOrderAndGood1.getId().toString());
+            }
+        }
+
+        PageInfo<SeckillOrderAndGood> pageInfo = new PageInfo<>(list);
+
+        return new PageResult(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        //update tb_goods set audit_status=? where id in (?,?...)
+
+
+        TbSeckillOrder seckillOrder = new TbSeckillOrder();
+        seckillOrder.setStatus(status);
+        // 更新收货时间
+        seckillOrder.setConsignTime(new Date());
+
+
+        Example example = new Example(TbSeckillOrder.class);
+        example.createCriteria().andIn("id", Arrays.asList(ids));
+
+        //参数1：更新的内容也就是对应在update语句中的set
+        //参数2：更新条件对应where子句
+        seckillOrderMapper.updateByExampleSelective(seckillOrder, example);
+    }
+
+    @Override
+    public void updateEndTime(Long id) {
+        // 获取订单
+        TbSeckillOrder seckillOrder = findOne(id);
+        // 改变状态
+        seckillOrder.setStatus("3");
+        // 成功交易的时间
+        seckillOrder.setEndTime(new Date());
+
+        // 修改
+        update(seckillOrder);
+    }
+
+    @Override
+    public void updateCloseatus(Long[] ids, String status) {
+        //update tb_goods set audit_status=? where id in (?,?...)
+
+
+        TbSeckillOrder seckillOrder = new TbSeckillOrder();
+        seckillOrder.setStatus(status);
+        // 更新收货时间
+        seckillOrder.setCloseTime(new Date());
+
+
+        Example example = new Example(TbSeckillOrder.class);
+        example.createCriteria().andIn("id", Arrays.asList(ids));
+
+        //参数1：更新的内容也就是对应在update语句中的set
+        //参数2：更新条件对应where子句
+        seckillOrderMapper.updateByExampleSelective(seckillOrder, example);
     }
 }

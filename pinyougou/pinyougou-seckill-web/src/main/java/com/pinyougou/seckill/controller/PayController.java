@@ -51,7 +51,7 @@ public class PayController {
                     break;
                 }
                 count++;
-                if(count > 20){
+                if(count > 1200){
                     //超过1分钟
                     result = Result.fail("支付超时");
 
