@@ -42,5 +42,8 @@ app.service("allOrderListService", function ($http) {
         return $http.get("../order/selectOptionList.do");
 
     };
+    this.updateStatus = function (selectedIds, status) {
+        return $http.get("../order/updateOrderStatus.do?ids=" + selectedIds + "&status=" + status);
+    };
 
 });

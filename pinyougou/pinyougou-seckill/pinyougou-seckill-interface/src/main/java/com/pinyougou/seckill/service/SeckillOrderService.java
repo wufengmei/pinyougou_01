@@ -1,8 +1,11 @@
 package com.pinyougou.seckill.service;
 
+import com.pinyougou.pojo.SeckillOrderAndGood;
 import com.pinyougou.pojo.TbSeckillOrder;
 import com.pinyougou.service.BaseService;
 import com.pinyougou.vo.PageResult;
+
+import java.util.Map;
 
 public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
 
@@ -35,4 +38,15 @@ public interface SeckillOrderService extends BaseService<TbSeckillOrder> {
      * @param outTradeNo 秒杀商品订单号
      */
     void deleteOrderInRedisByOutTradeNo(String outTradeNo) throws InterruptedException;
+
+    Map<String, Object> findMySeckillOrder(String username);
+
+    Map<String, Object> findMyOneSeckillOrder(Long id,String username);
+    PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood);
+
+    void updateStatus(Long[] ids, String status);
+
+    void updateEndTime(Long id);
+
+    void updateCloseatus(Long[] ids, String status);
 }

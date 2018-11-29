@@ -36,70 +36,14 @@ public interface OrderService extends BaseService<TbOrder> {
     void updateOrderStatus(String outTradeNo, String transaction_id);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     List findOrderListByUsername(String username);
-
-    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
-
-    TbPayLog findOutTradeNo(String orderId);
-
-    TbOrderItem findOrderItemById(String itemId);
+     * @param page 第几页    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
+     */    TbPayLog findOutTradeNo(String orderId);    TbOrderItem findOrderItemById(String itemId);
     PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 
-
     TbOrder findOrderById(String orderId);
-    PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood);
+
+    void updateCloseatus(Long[] ids, String status);
+
+    void updateStatus(Long[] ids, String status);
 }

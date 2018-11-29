@@ -43,4 +43,8 @@ app.service("allSeckillOrderListService", function ($http) {
 
     };
 
+    this.updateStatus = function (selectedIds, status) {
+        return $http.get("../order/updateStatus.do?ids=" + selectedIds + "&status=" + status);
+    };
+
 });

@@ -16,7 +16,7 @@
     <script src="js/controller/orderInfoController.js"></script>
 </head>
 
-<body ng-app="pinyougou" ng-controller="orderInfoController" ng-init="getUsername();findAddressList();findCartList()">
+<body ng-app="pinyougou" ng-controller="orderInfoController" ng-init="getAddressInformation();getUsername();getUserInformation()">
 <!--head-->
 <div class="top">
     <div class="py-container">
@@ -64,84 +64,123 @@
 			<div class="checkout-steps">
 				<!--收件人信息-->
 				<div class="step-tit">
-					<h5>收件人信息<span><a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd">新增收货地址</a></span></h5>
+					<h5>收件人信息<span><a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd" ng-click="findAddressList()">新增收货地址</a></span></h5>
 				</div>
 				<div class="step-cont">
 					<div class="addressInfo">
 						<ul class="addr-detail">
 							<li class="addr-item">
 							
-							  <div ng-repeat="address in addressList">
+							  <div ng-repeat="address in addressInformation">
 								<div class="con name {{isSelectedAddress(address)?'selected':''}}">
                                     <a href="javascript:;" ng-click="selectAddress(address)" >{{address.contact}}<span title="点击取消选择">&nbsp;</span></a></div>
-								<div class="con address">{{address.contact}} {{address.address}} <span>{{address.mobile}}</span>
-									<span class="base" ng-if="address.isDefault=='1'">默认地址</span>
+								<div class="con address">
+									{{address.contact}} {{address.address}}
+									<span>{{address.mobile}}</span>
+									<span class="base" ng-if="address.default=='1'">默认地址</span>
+
 									<span class="edittext">
                                         <a data-toggle="modal" data-target=".edit" data-keyboard="false" >编辑</a>&nbsp;&nbsp;
-                                        <a href="javascript:;">删除</a></span>
+                                        <a href="javascript:;">删除</a>
+									</span>
 								</div>
+
 								<div class="clearfix"></div>
+
 							  </div>
 
 							</li>
 
 							
 						</ul>
-						<!--添加地址-->
-                          <div  tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade edit">
-						  <div class="modal-dialog">
-						    <div class="modal-content">
-						      <div class="modal-header">
-						        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
-						        <h4 id="myModalLabel" class="modal-title">添加收货地址</h4>
-						      </div>
-						      <div class="modal-body">
-						      	<form action="" class="sui-form form-horizontal">
-						      		 <div class="control-group">
-									    <label class="control-label">收货人：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									  </div>
-									   
-									   <div class="control-group">
-									    <label class="control-label">详细地址：</label>
-									    <div class="controls">
-									      <input type="text" class="input-large">
-									    </div>
-									  </div>
-									   <div class="control-group">
-									    <label class="control-label">联系电话：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									  </div>
-									   <div class="control-group">
-									    <label class="control-label">邮箱：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									  </div>
-									   <div class="control-group">
-									    <label class="control-label">地址别名：</label>
-									    <div class="controls">
-									      <input type="text" class="input-medium">
-									    </div>
-									    <div class="othername">
-									    	建议填写常用地址：<a href="#" class="sui-btn btn-default">家里</a>　<a href="#" class="sui-btn btn-default">父母家</a>　<a href="#" class="sui-btn btn-default">公司</a>
-									    </div>
-									  </div>
-									  
-						      	</form>
-						      	
-						      	
-						      </div>
-						      <div class="modal-footer">
-						        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">确定</button>
-						        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
-						      </div>
-						    </div>
-						  </div>
+						<!--新增地址弹出层-->
+						<div  tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade edit" style="width:580px;">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+										<h4 id="myModalLabel" class="modal-title">新增地址</h4>
+									</div>
+									<div class="modal-body">
+										<form action="" class="sui-form form-horizontal">
+											<div class="control-group">
+												<label class="control-label">收货人：</label>
+												<div class="controls">
+													<input type="text" class="input-medium" ng-model="thisUserInfromation.contact" ng-required="true" >
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">所在地区：</label>
+												<div class="controls">
+
+													<div data-toggle="distpicker">
+
+														<select ng-required="true" ng-model="thisUserInfromation.addressMap.provinceName" ng-options="province as province.province for province in provinceList" ng-change="findCities(thisUserInfromation.addressMap.provinceName.provinceId)">
+														</select>
+
+														<select ng-required="true" ng-model="thisUserInfromation.addressMap.cityName" ng-options="city as city.city for city in citiesList" ng-change="findAreas(thisUserInfromation.addressMap.cityName.cityId)">
+														</select>
+
+														<select ng-required="true" ng-model="thisUserInfromation.addressMap.townName" ng-options="town as town.area for town in areasList">
+
+														</select>
+
+
+														<!--<select>
+                                                            <option>{{thisUserInfromation.addressMap.provinceName.province}}</option>
+                                                            <option ng-repeat="tbProvince.provinceId as tbProvince in provinceList">{{tbProvince.province}}</option>
+
+                                                            <option>{{thisUserInfromation.addressMap.provinceName.province}}</option>
+                                                            <option ng-repeat="tbCity in cityList">{{tbCity.province}}</option>
+                                                        </select>
+                                                        <select>
+                                                            <option>{{thisUserInfromation.addressMap.provinceName.province}}</option>
+                                                            <option ng-repeat="tbTown in townList">{{tbTown.province}}</option>
+                                                        </select>-->
+
+
+
+													</div>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">详细地址：</label>
+												<div class="controls">
+													<input type="text" class="input-large" ng-required="true" ng-model="thisUserInfromation.address">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">联系电话：</label>
+												<div class="controls">
+													<input type="text" class="input-medium" ng-required="true" ng-model="thisUserInfromation.mobile">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">邮箱：</label>
+												<div class="controls">
+													<input type="text" class="input-medium" value="JBL@itcast.com">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">地址别名：</label>
+												<div class="controls">
+													<input type="text" class="input-medium" ng-required="true" ng-model="thisUserInfromation.alias">
+												</div>
+												<div class="othername">
+													建议填写常用地址：<a href="#" class="sui-btn btn-default" ng-click="thisUserInfromation.alias = '家里'">家里</a>　<a href="#" class="sui-btn btn-default" ng-click="thisUserInfromation.alias = '父母家'">父母家</a>　<a href="#" class="sui-btn btn-default" ng-click="thisUserInfromation.alias = '公司'">公司</a>
+												</div>
+											</div>
+
+										</form>
+
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" data-ok="modal" class="sui-btn btn-primary btn-large" ng-click="updateAddressInfromation(thisUserInfromation)">确定</button>
+										<button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+									</div>
+								</div>
+							</div>
 						</div>
 						 <!--确认地址-->
 					</div>

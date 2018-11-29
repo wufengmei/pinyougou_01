@@ -1,10 +1,16 @@
 package com.pinyougou.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.OrderAndGood;
 import com.pinyougou.pojo.SeckillOrderAndGood;
+import com.pinyougou.seckill.service.SeckillOrderService;
 import com.pinyougou.vo.PageResult;
+import com.pinyougou.vo.Result;
+import jdk.nashorn.internal.ir.IfNode;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +20,9 @@ public class OrderController {
 
     @Reference
     private OrderService orderService;
+    @Reference
+    private SeckillOrderService seckillOrderService;
+
 
     /**
      * 查询所有的订单列表
@@ -43,8 +52,39 @@ public class OrderController {
         // 获取登陆用户名
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         seckillOrderAndGood.setUsername(username);
+        return seckillOrderService.searchSeckillGoods(page, rows, seckillOrderAndGood);
+    }
 
-        return orderService.searchSeckillGoods(page, rows, seckillOrderAndGood);
+    /**
+     *
+     * @param ids
+     * @param status
+     * @return
+     */
+    // 更新商品的状态
+    @GetMapping("/updateStatus")
+    public Result updateStatus(Long[] ids, String status){
+        try {
+            seckillOrderService.updateStatus(ids, status);
+
+            return Result.ok("更新状态成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.fail("更新状态失败");
+    }
+    @GetMapping("/updateOrderStatus")
+    public Result updateOrderStatus(Long[] ids, String status){
+        try {
+            orderService.updateStatus(ids, status);
+
+            return Result.ok("更新状态成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.fail("更新状态失败");
     }
 
 }

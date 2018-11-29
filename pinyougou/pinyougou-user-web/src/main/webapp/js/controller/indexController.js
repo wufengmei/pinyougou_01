@@ -1,11 +1,31 @@
-app.controller("indexController", function ($scope,$location, userService,payService) {
+app.controller("indexController", function ($scope,$location,userService,payService) {
+    $scope.userInformation = {};
 
     $scope.getUsername = function () {
         userService.getUsername().success(function (response) {
             $scope.username = response.username;
         });
     };
-    $scope.findOrderList = function () {
+    $scope.getUserInformation = function() {
+        userService.getUserInformation().success(function(response) {
+            $scope.userInformation.nickName = response.nickName;
+            $scope.userInformation.sex = response.sex;
+            $scope.userInformation.birthdayYear = response.birthdayYear;
+            $scope.userInformation.birthdayMonth = response.birthdayMonth;
+            $scope.userInformation.birthdayDay = response.birthdayDay;
+            // document.getElementById('select_year2').value
+        })
+    };
+    $scope.updateUserInformation = function (userInformation) {
+
+        userService.updateUserInformation(userInformation).success(function (response) {
+            alert("信息保存成功");
+            return;
+        }).fail(function (response) {
+            alert("信息保存失败，请检查网络")
+        })
+    };
+	$scope.findOrderList = function () {
         userService.findOrderList().success(function (response) {
             $scope.orderList = JSON.parse(response);
 
@@ -17,7 +37,7 @@ app.controller("indexController", function ($scope,$location, userService,paySer
     $scope.findOutTradeNo = function(){
         userService.findOutTradeNo($scope.orderId).success(function (response) {
             $scope.weixin = response;
-            $scope.outTradeNo = response.outTradeNo
+            $scope.outTradeNo = response.outTradeNo;
 
 
                     if("SUCCESS"==response.result_code){
@@ -29,7 +49,7 @@ app.controller("indexController", function ($scope,$location, userService,paySer
                             element:document.getElementById("qrious"),
                             size:250,
                             level:"M",
-                            value:response.code_url,
+                            value:response.code_url
                         });
 
                         //查询支付状态
@@ -42,7 +62,7 @@ app.controller("indexController", function ($scope,$location, userService,paySer
 
 
         })
-    }
+    };
 
     queryPayStatus = function (outTradeNo) {
         payService.queryPayStatus(outTradeNo).success(function (response) {
@@ -71,6 +91,4 @@ app.controller("indexController", function ($scope,$location, userService,paySer
         $scope.orderId = $location.search()["orderId"]
 
     };
-
-
 });

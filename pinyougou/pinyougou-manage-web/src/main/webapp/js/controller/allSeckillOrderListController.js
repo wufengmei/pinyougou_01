@@ -102,31 +102,82 @@ app.controller("allSeckillOrderListController", function ($scope, $http,$control
     };
 
 
-    //读取一级商品分类列表
-    $scope.selectItemCat1List = function () {
-        itemCatService.findByParentId(0).success(function (response) {
-            $scope.itemCat1List = response;
-        });
+    //城市联动
+    $scope.$watch("searchAdress.province1", function (newValue, oldValue) {
+        if (newValue != undefined) {
+
+            $scope.searchAdress.district1="";
+            $scope.searchAdress.city1="";
+        }
+    });
+    $scope.$watch("searchAdress.city1", function (newValue, oldValue) {
+        if (newValue != undefined) {
+            $scope.searchAdress.district1="";
+        }
+    });
+
+    //订单的状态
+    $scope.orderStatus = ["未付款","已付款","已发货","交易成功","交易关闭","待评价"];
+
+    // 显示年月日
+    $scope.year = function (time) {
+        return  format(new Date(time),'yyyy-MM-dd');
     };
 
-    //读取二级商品分类列表
-    $scope.$watch("searchEntity.category1Id", function (newValue, oldValue) {
-        if (newValue != undefined) {
-            //根据1级商品分类查询2级商品分类
-            itemCatService.findByParentId(newValue).success(function (response) {
-                $scope.itemCat2List = response;
-            });
-        }
-    });
 
-    //读取三级商品分类列表
-    $scope.$watch("searchEntity.category2Id", function (newValue, oldValue) {
-        if (newValue != undefined) {
-            //根据2级商品分类查询3级商品分类
-            itemCatService.findByParentId(newValue).success(function (response) {
-                $scope.itemCat3List = response;
+
+    var format = function(time, format){
+        var t = new Date(time);
+        var tf = function(i){return (i < 10 ? '0' : '') + i};
+        return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){
+            switch(a){
+                case 'yyyy':
+                    return tf(t.getFullYear());
+                    break;
+                case 'MM':
+                    return tf(t.getMonth() + 1);
+                    break;
+                case 'mm':
+                    return tf(t.getMinutes());
+                    break;
+                case 'dd':
+                    return tf(t.getDate());
+                    break;
+                case 'HH':
+                    return tf(t.getHours());
+                    break;
+                case 'ss':
+                    return tf(t.getSeconds());
+                    break;
+            }
+        })
+    };
+    $scope.status = {
+        "未付款" : "0",
+        "已付款" : "1",
+        "已发货" : "2",
+        "交易成功" : "3",
+        "交易关闭" : "4",
+        "待评价" : "5"
+    };
+
+    //修改订单的状态
+    $scope.updateStatus = function (status) {
+        if($scope.selectedIds.length < 1) {
+            alert("请先选择订单");
+            return;
+        }
+        if(confirm("确定要更新选中的商品状态吗？")){
+            allSeckillOrderListService.updateStatus($scope.selectedIds, status).success(function (response) {
+                if(response.success) {
+                    //刷新列表并清空选中的那些商品
+                    $scope.reloadList();
+                    $scope.selectedIds = [];
+                } else {
+                    alert(response.message);
+                }
             });
         }
-    });
+    };
 
 });

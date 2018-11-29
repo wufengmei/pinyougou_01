@@ -44,8 +44,7 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
     private GoodsMapper goodsMapper;
     @Autowired
     private OrderAndGoodMapper orderAndGoodMapper;
-    @Autowired
-    private SeckillOrderAndGoodMapper seckillOrderAndGoodMapper;
+
 
     @Override
     public PageResult search(Integer page, Integer rows, TbOrder order) {
@@ -223,6 +222,44 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
         return tbOrderList.get(0);
     }
 
+    @Override
+    public void updateCloseatus(Long[] ids, String status) {
+        //update tb_goods set audit_status=? where id in (?,?...)
+
+
+        TbOrder order = new TbOrder();
+        order.setStatus(status);
+        // 更新收货时间
+        order.setCloseTime(new Date());
+
+
+        Example example = new Example(TbOrder.class);
+        example.createCriteria().andIn("orderId", Arrays.asList(ids));
+
+        //参数1：更新的内容也就是对应在update语句中的set
+        //参数2：更新条件对应where子句
+        orderMapper.updateByExampleSelective(order, example);
+    }
+
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        //update tb_goods set audit_status=? where id in (?,?...)
+
+
+        TbOrder order = new TbOrder();
+        order.setStatus(status);
+        // 更新收货时间
+        order.setConsignTime(new Date());
+
+
+        Example example = new Example(TbOrder.class);
+        example.createCriteria().andIn("orderId", Arrays.asList(ids));
+
+        //参数1：更新的内容也就是对应在update语句中的set
+        //参数2：更新条件对应where子句
+        orderMapper.updateByExampleSelective(order, example);
+    }
+
     /**
      * 查询商家对应的所有订单列表
      * @param page 第几页
@@ -235,19 +272,11 @@ public class OrderServiceImpl extends BaseServiceImpl<TbOrder> implements OrderS
         // 分页
         PageHelper.startPage(page,rows);
         List<OrderAndGood> list = orderAndGoodMapper.findOrderAndGood(orderAndGood);
+        for (OrderAndGood andGood : list) {
+            andGood.setId(andGood.getOrderId().toString());
+        }
 
         PageInfo<OrderAndGood> pageInfo = new PageInfo<>(list);
-
-        return new PageResult(pageInfo.getTotal(), pageInfo.getList());
-    }
-
-    @Override
-    public PageResult searchSeckillGoods(Integer page, Integer rows, SeckillOrderAndGood seckillOrderAndGood) {
-        // 分页
-        PageHelper.startPage(page,rows);
-        List<SeckillOrderAndGood> list = seckillOrderAndGoodMapper.findSeckillOrderAndGood(seckillOrderAndGood);
-
-        PageInfo<SeckillOrderAndGood> pageInfo = new PageInfo<>(list);
 
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
