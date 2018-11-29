@@ -9,9 +9,14 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-success-cart.css" />
+    <script src="plugins/angularjs/angular.min.js"></script>
+    <script src="js/base.js"></script>
+
+    <script src="js/service/mallService.js"></script>
+    <script src="js/controller/mallController.js"></script>
 </head>
 
-<body>
+<body ng-app="pinyougou" ng-controller="mallController" ng-init="getItemId();findItemById(itemId)">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -25,6 +30,7 @@
 						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
 					</ul>
 					<ul class="fr">
+                        <li class="f-item"><a href="http://user.pinyougou.com">我的个人中心 |</a> </li>
 						<li class="f-item">我的订单</li>
 						<li class="f-item space"></li>
 						<li class="f-item"><a href="home.html" target="_blank">我的品优购</a></li>
@@ -146,10 +152,10 @@ $(function(){
             <h3><i class="sui-icon icon-pc-right"></i>商品已成功加入购物车！</h3>
             <div class="goods">
                 <div class="left-good">
-                    <div class="left-pic"><img src="img/_/gocart.jpg"></div>
+                    <div class="left-pic"><img src="{{item.image}}"></div>
                     <div class="right-info">
-                        <p class="title">美的（Midea)电饭煲WFZ5099IH IH电磁加热 1250W大火力 钛金釜5L电饭锅</p>
-                        <p class="attr">颜色：WFZ5099IH/5L钛金釜内胆 数量：1</p>
+                        <p class="title">{{item.title}}</p>
+                        <p class="attr">{{item.spec}} 数量：1</p>
                     </div>
                 </div>
                 <div class="right-gocart">

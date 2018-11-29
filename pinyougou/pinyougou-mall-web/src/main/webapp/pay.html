@@ -6,22 +6,25 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 		<title>微信支付页</title>
-        <link rel="icon" href="/assets/img/favicon.ico">
-		
-	
-    <link rel="stylesheet" type="text/css" href="css/webbase.css" />
-    <link rel="stylesheet" type="text/css" href="css/pages-weixinpay.css" />
-</head>
+        <link rel="stylesheet" type="text/css" href="css/webbase.css" />
+        <link rel="stylesheet" type="text/css" href="css/pages-weixinpay.css" />
+        <script src="plugins/angularjs/angular.min.js"></script>
+        <script src="plugins/qrious.min.js"></script>
+        <script src="js/base.js"></script>
+        <script src="js/service/cartService.js"></script>
+		<script src="js/service/payService.js"></script>
+        <script src="js/controller/payController.js"></script>
+    </head>
 
-	<body>
-		<!--head-->
-		<div class="top">
-			<div class="py-container">
-				<div class="shortcut">
-					<ul class="fl">
-						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请登录　<span><a href="#">免费注册</a></span></li>
-					</ul>
+<body ng-app="pinyougou" ng-controller="payController" ng-init="getUsername();createNative()">
+    <!--head-->
+    <div class="top">
+        <div class="py-container">
+            <div class="shortcut">
+                <ul class="fl">
+                    <li class="f-item">品优购欢迎您！</li>
+                    <li class="f-item">{{username}}　<span><a href="/logout/cas">退出</a></span></li>
+                </ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>
 						<li class="f-item space"></li>
@@ -49,16 +52,15 @@
 			<!--主内容-->
 			<div class="checkout py-container  pay">
 				<div class="checkout-tit">
-					<h4 class="fl tit-txt"><span class="success-icon"></span><span  class="success-info">订单提交成功，请您及时付款！订单号：56789065645</span></h4>
-                    <span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money">￥17,654</em>元</span>
+					<h4 class="fl tit-txt"><span class="success-icon"></span><span  class="success-info">订单提交成功，请您及时付款！订单号：{{outTradeNo}}</span></h4>
+                    <span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money">￥{{totalFee}}</em>元</span>
 					<div class="clearfix"></div>
 				</div>				
 				<div class="checkout-steps">
 					<div class="fl weixin">微信支付</div>
                     <div class="fl sao"> 
-                        <p class="red">二维码已过期，刷新页面重新获取二维码。</p>                      
                         <div class="fl code">
-                            <img src="img/erweima.png" alt="">
+                            <img id="qrious">
                             <div class="saosao">
                                 <p>请使用微信扫一扫</p>
                                 <p>扫描二维码支付</p>

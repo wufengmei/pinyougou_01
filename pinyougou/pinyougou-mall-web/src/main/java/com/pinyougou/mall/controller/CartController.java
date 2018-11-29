@@ -1,4 +1,4 @@
-package com.pinyougou.cart.controller;
+package com.pinyougou.mall.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;

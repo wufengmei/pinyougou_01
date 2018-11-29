@@ -1,6 +1,5 @@
 package com.pinyougou.mapper;
 
-import com.pinyougou.pojo.OrderAndGood;
 import com.pinyougou.pojo.SeckillOrderAndGood;
 
 import java.util.List;

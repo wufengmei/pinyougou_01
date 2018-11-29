@@ -1,7 +1,6 @@
 package com.pinyougou.order.service;
 
 import com.pinyougou.pojo.OrderAndGood;
-import com.pinyougou.pojo.SeckillOrderAndGood;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
@@ -36,10 +35,9 @@ public interface OrderService extends BaseService<TbOrder> {
     void updateOrderStatus(String outTradeNo, String transaction_id);
 
 
-    TbPayLog findOutTradeNo(String orderId);
     List findOrderListByUsername(String username);
     List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
-    TbOrderItem findOrderItemById(String itemId);
+    TbPayLog findOutTradeNo(String orderId);    TbOrderItem findOrderItemById(String itemId);
     PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 
     TbOrder findOrderById(String orderId);

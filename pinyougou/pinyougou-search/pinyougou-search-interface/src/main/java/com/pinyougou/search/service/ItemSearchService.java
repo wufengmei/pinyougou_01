@@ -26,4 +26,6 @@ public interface ItemSearchService {
     void deleteItemsByGoodsIds(List<Long> goodsIdList);
 
     Map<String, Object> searchBySeller(String seller);
+
+
 }

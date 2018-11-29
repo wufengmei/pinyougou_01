@@ -67,4 +67,6 @@ public interface GoodsService extends BaseService<TbGoods> {
      * @return goods
      */
     Goods findGoodsByIdAndStatus(Long goodsId, String itemStatus);
+
+    TbItem findItemById(Long itemId);
 }

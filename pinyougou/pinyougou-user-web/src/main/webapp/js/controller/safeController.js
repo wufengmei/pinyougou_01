@@ -15,6 +15,7 @@ app.controller("safeController", function ($scope, addressService, userService) 
             $scope.userInformation.birthdayYear = response.birthdayYear;
             $scope.userInformation.birthdayMonth = response.birthdayMonth;
             $scope.userInformation.birthdayDay = response.birthdayDay;
+            $scope.userInformation.phone = response.phone;
         })
     };
     $scope.submitPassword = function (password) {
@@ -28,5 +29,31 @@ app.controller("safeController", function ($scope, addressService, userService) 
             }
         })
     };
+    $scope.sendSmsCodeNormal = function (phoneNum) {
+        userService.sendSmsCode(phoneNum).success(function (response) {
+            alert(response.message);
+        });
+    };
+    $scope.checkSmsCode = function(smsCode,phoneNum) {
+        userService.checkSmsCode(smsCode,phoneNum).success(function(response) {
+            if(response.success) {
+                alert(response.message);
+                location.href = "home-setting-address-phone.html";
+            }else{
+                alert(response.message);
+                //跳转回主页
+                // location.href = "home-setting-safe.html";
+            }
+        })
+    };
+    $scope.savePhone = function(phoneNum){
+        userService.savePhone(phoneNum).success(function(response) {
+            if(response.success) {
+                location.href = "home-setting-address-complete.html";
+            }else{
+                alert(response.message)
+            }
+        })
+    }
 
 });

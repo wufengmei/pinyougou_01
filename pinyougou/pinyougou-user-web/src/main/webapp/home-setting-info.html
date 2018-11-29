@@ -13,6 +13,7 @@
 	<script src="plugins/angularjs/angular.min.js"></script>
 	<script src="js/base.js"></script>
 	<script src="js/service/userService.js"></script>
+	<script src="js/service/payService.js"></script>
 	<script src="js/controller/indexController.js"></script>
 </head>
 
@@ -171,7 +172,7 @@
 				<div class="person-info">
 					<div class="person-photo"><img src="img/_/photo.png" alt=""></div>
 					<div class="person-account">
-						<span class="name">Michelle</span>
+						<span class="name">{{username}}</span>
 						<span class="safe">账户安全</span>
 					</div>
 					<div class="clearfix"></div>
@@ -239,22 +240,6 @@
 									</div>
 								</div>
 
-
-                                    
-								>								<!--<div class="control-group">
-									<label for="inputJob" class="control-label">职业：</label>
-									<div class="controls"><span class="sui-dropdown dropdown-bordered select"><span class="dropdown-inner"><a role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                                <input name="job" type="hidden" data-rules="required"><i class="caret"></i><span>请选择</span></a>
-                                            <ul id="menu4" role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="bj">程序员</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb">产品经理</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb">UI设计师</a></li>
-                                            </ul>
-                                            </span>
-                                            </span>
-									</div>
-                                    
-								</div>-->
 								<div class="control-group">
 									<label for="sanwei" class="control-label"></label>
 									<div class="controls">
