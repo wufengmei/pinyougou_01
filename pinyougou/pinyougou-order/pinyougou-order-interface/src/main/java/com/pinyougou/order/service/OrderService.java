@@ -1,7 +1,6 @@
 package com.pinyougou.order.service;
 
 import com.pinyougou.pojo.OrderAndGood;
-import com.pinyougou.pojo.SeckillOrderAndGood;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbOrderItem;
 import com.pinyougou.pojo.TbPayLog;
@@ -37,8 +36,8 @@ public interface OrderService extends BaseService<TbOrder> {
 
 
     List findOrderListByUsername(String username);
-     * @param page 第几页    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
-     */    TbPayLog findOutTradeNo(String orderId);    TbOrderItem findOrderItemById(String itemId);
+    List<TbOrderItem> findOrderItemListByOrderId(Long orderId);
+    TbPayLog findOutTradeNo(String orderId);    TbOrderItem findOrderItemById(String itemId);
     PageResult searchByUsername(Integer page, Integer rows, OrderAndGood orderAndGood);
 
     TbOrder findOrderById(String orderId);
